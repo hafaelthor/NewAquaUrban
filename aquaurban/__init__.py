@@ -15,7 +15,7 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'danger'
 socketio = SocketIO(app, async_mode='threading')
 
-from aquaurban import model, enum
+from aquaurban import model, enum, http_route
 
 #def send_action (system, action):
 #	mqtt_send_action(system, ActionCode(action))
