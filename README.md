@@ -27,7 +27,7 @@ Users will have different permissions to act in the system, from those who can o
 ### SQL Alchemy
 - database handling
 
-###Paho MQTT
+### Paho MQTT
 - mqtt communication with different systems
 
 ## Communication Funcionality
