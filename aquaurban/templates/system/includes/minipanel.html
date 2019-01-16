@@ -1,0 +1,70 @@
+{% macro create_minipanel(id, system) %}
+	<div class="system-minipanel" data-id="{{id}}" data-system-id="{{system.id}}">
+		<h2>{{system.name}}</h2>
+		{% with bioinfo = system.bioinfos[-1] %}
+			<ul>
+				<li class="system-minipanel-bioinfo" data-bioinfo="waterlevel">
+					{% if bioinfo.waterlevel is not none %}
+						{{"above" if bioinfo.waterlevel else "below"}}
+					{% else %}
+						{{"unknown"}}
+					{% endif %}
+				</li>
+				<li class="system-minipanel-bioinfo" data-bioinfo="brightness">
+					{% if bioinfo.brightness is not none %}
+						{{bioinfo.brightness}}
+					{% else %}
+						{{"unknown"}}
+					{% endif %}
+				</li>
+				<li class="system-minipanel-bioinfo" data-bioinfo="temperature">
+					{% if bioinfo.temperature is not none %}
+						{{bioinfo.temperature}}
+					{% else %}
+						{{"unknown"}}
+					{% endif %}
+				</li>
+				<li class="system-minipanel-bioinfo" data-bioinfo="acidness">
+					{% if bioinfo.acidness is not none %}
+						{{bioinfo.acidness}}
+					{% else %}
+						{{"unknown"}}
+					{% endif %}
+				</li>
+				<button class="btn btn-outline-info system-minipanel-action" data-action="0">Turn Ledlights on</button>
+				<button class="btn btn-outline-info system-minipanel-action" data-action="1">Turn Ledlights off</button>
+			</ul>
+		{% endwith %}
+	</div>
+{% endmacro %}
+
+<script type="text/javascript">
+	class SystemMinipanel {
+		constructor (id) {
+			this.$minipanel = $('.system-minipanel[data-id="' + id + '"]');
+			this.$bioinfo 	= {};
+			this.$action 	= {};
+			var that = this;
+			this.$minipanel.find('.system-minipanel-bioinfo').each(function () {
+				that.$bioinfo[$(this).data('bioinfo')] = $(this);
+			});
+			this.$minipanel.find('.system-minipanel-action').each(function () {
+				that.$action[$(this).data('action')] = $(this);
+				$(this).on('click', function () {
+					send_action(that.$minipanel.data('system-id'), $(this).data('action'));
+				}); 
+			});
+		}
+
+		updateBioinfo (bioinfo) {
+			if (bioinfo.waterlevel != null) this.$bioinfo.waterlevel.html(bioinfo.waterlevel?'above':'below');
+			else this.$bioinfo.waterlevel.html('unknown');
+			if (bioinfo.brightness != null) this.$bioinfo.brightness.html(bioinfo.brightness);
+			else this.$bioinfo.brightness.html('unknown');
+			if (bioinfo.temperature != null) this.$bioinfo.temperature.html(bioinfo.temperature);
+			else this.$bioinfo.temperature.html('unknown');
+			if (bioinfo.acidness != null) this.$bioinfo.acidness.html(bioinfo.acidness);
+			else this.$bioinfo.acidness.html('unknown');
+		}
+	}
+</script>

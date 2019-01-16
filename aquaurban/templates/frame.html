@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %} Aqua Urban {% endblock %}</title>
+	{% include "includes/head.html" %}
+	{% block head %}
+	{% endblock head %}
+</head>
+<body>
+	<div class="container">
+		{% include "includes/body_header.html" %}
+		{% with messages = get_flashed_messages(with_categories=True) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="alert alert-{{category}}">
+						{{message}}
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		{% block content %}
+		{% endblock content %}
+	</div>
+	{% include "includes/main_scripts.html" %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends 'frame.html' %}
+
+{% block title %} Systems Dashboard - {{super()}} {% endblock %}
+
+{% block content %}
+{% include "system/includes/minipanel.html" %}
+{% from "system/includes/minipanel.html" import create_minipanel %}
+
+	{% for system in current_user.systems %}
+		{{create_minipanel(loop.index, system)}}
+	{% endfor %}
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/ws_route.js')}}"></script>
+	<script type="text/javascript">
+		var systemMinipanels = {}
+
+		$(() => {
+			$('.system-minipanel').each(function () {
+				systemMinipanels[$(this).data('system-id')] = new SystemMinipanel($(this).data('id'))
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		
+	</script>
+{% endblock content %}
