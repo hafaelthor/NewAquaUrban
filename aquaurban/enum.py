@@ -8,3 +8,8 @@ class UserPermissionCode (enum.Enum):
 class ActionCode (enum.Enum):
 	LED_ON 	= 0
 	LED_OFF = 1
+
+FEATURE_PERMISSION_TRESHOLD = {
+	'bio': UserPermissionCode.DUMMY,
+	'act': UserPermissionCode.COMMON
+}

@@ -1,7 +1,8 @@
+import time
 from flask_login import UserMixin
 
 from aquaurban import db, login_manager
-from aquaurban.enum import ActionCode
+from aquaurban.enum import ActionCode, FEATURE_PERMISSION_TRESHOLD
 
 @login_manager.user_loader
 def load_user (user_id):
@@ -41,6 +42,14 @@ class System (db.Model):
 	bioinfos		= db.relationship('Bioinfo', backref='system', lazy=True)
 	actions			= db.relationship('Action', backref='system', lazy=True)
 
+	def safe_ids_for (self, feature):
+		ids = [self.user_id]
+		safe_ids  = []
+		for unchecked_id in ids:
+			if User.query.get(unchecked_id).permission >= FEATURE_PERMISSION_TRESHOLD[feature].value:
+				safe_ids.append(unchecked_id)
+		return safe_ids
+
 	def __repr__ (self):
 		return f'<SYSTEM {self.id} | name=\"{self.name}\">'
 
@@ -52,6 +61,16 @@ class Bioinfo (db.Model):
 	temperature = db.Column(db.Float)
 	acidness	= db.Column(db.Float)
 	system_id	= db.Column(db.Integer, db.ForeignKey('system.id'), nullable=False)
+
+	def to_dict (self):
+		return {
+			"timestamp": time.mktime(self.timestamp.timetuple()),
+			"waterlevel": self.waterlevel,
+			"brightness": self.brightness,
+			"temperature": self.temperature,
+			"acidness": self.acidness,
+			"system_id": self.system_id
+		}
 
 	def __repr__ (self):
 		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC pH({self.acidness})] system_id={self.system_id}>'

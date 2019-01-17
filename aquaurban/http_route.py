@@ -1,7 +1,9 @@
 from flask import render_template, send_from_directory, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 
+import aquaurban
 from aquaurban import app, db, bcrypt
+from aquaurban.enum import UserPermissionCode
 from aquaurban.model import User, Community, System
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
 #from aquaurban.mqtt_route import listen_system
@@ -22,7 +24,7 @@ def register ():
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash))
+		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash, permission=UserPermissionCode.COMMON.value))
 		db.session.commit()
 		flash(f'Account created for {form.username.data}!', 'success')
 		return redirect(url_for('index'))
@@ -66,12 +68,10 @@ def create_system ():
 	if form.validate_on_submit():
 		if bcrypt.check_password_hash(current_user.password, form.user_pass.data):
 			if not System.query.filter_by(user_id=current_user.id, name=form.name.data).first():
-				system = System(name=form.name.data, user_id=current_user.id)
-				if form.community.data != -1:
-					system.community_id = form.community.data
+				system = System(name=form.name.data, user_id=current_user.id, community_id=form.community.data)
 				db.session.add(system)
 				db.session.commit()
-				#listen_system(system)
+				aquaurban.mqtt_hub.listen_system(system)
 				flash('System registered succesfully', 'success')
 				return redirect(url_for('index'))
 			else: flash('You already used that name in other system. Use another.', 'danger')

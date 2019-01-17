@@ -1,17 +1,16 @@
 const SOCKET_HOST = 'http://192.168.0.12:5000';
-var socket;
+const SYSTEM_NAMESPACE = '/system'
+var system_socket;
 
 function on_bioinfo (bioinfo) {
-	var systemId = bioinfo.id
-	systemMinipanels[systemId].updateBioinfo(bioinfo);
+	systemMinipanels[bioinfo.system_id].updateBioinfo(bioinfo);
 }
 
 function send_action (id, action) {
-	socket.emit('action', {id: id, action: action});
+	system_socket.emit('action', {id: id, action: action});
 }
 
 $(() => {
-	socket = io.connect(SOCKET_HOST);
-
-	socket.on('bio', on_bioinfo);
+	system_socket = io.connect(SOCKET_HOST + SYSTEM_NAMESPACE);
+	system_socket.on('bio', on_bioinfo);
 });
