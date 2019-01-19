@@ -11,9 +11,12 @@ THE CONFIG DIRECTORY IS IN THE ROOT DIRECTORY AND IGNORED BY GIT FOR SECURITY.
 TO MAKE THE APP RUN, CREATE YOUR OWN CONFIG PACKAGE OR DO AS YOU LIKE...
 see: http://exploreflask.com/en/latest/configuration.html
 '''
-
-
 db = SQLAlchemy(app)
+'''
+TO USE THE DATABASE WITH SQLALCHEMY, YOU NEED TO ADD A CONFIG VARIABLE
+CALLED "SQLALCHEMY_DATABASE_URI" WITH THE FILEPATH RELATIVE TO THE
+"aquaurban" PACKAGE FOLDER.
+'''
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
