@@ -5,8 +5,13 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '6dedf2697cbad5516fa43f98d18c4499'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cache.db'
+app.config.from_object('config.default')
+'''
+THE CONFIG DIRECTORY IS IN THE ROOT DIRECTORY AND IGNORED BY GIT FOR SECURITY.
+TO MAKE THE APP RUN, CREATE YOUR OWN CONFIG PACKAGE OR DO AS YOU LIKE...
+see: http://exploreflask.com/en/latest/configuration.html
+'''
+
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -18,14 +23,3 @@ socketio = SocketIO(app, async_mode='threading')
 from aquaurban import model, enum, http_route, ws_route
 from aquaurban.mqtt_route import MqttHub
 mqtt_hub = MqttHub()
-#def send_action (system, action):
-#	mqtt_send_action(system, ActionCode(action))
-
-#from aquaurban.mqtt_route import setup, mqtt_connections, send_action as mqtt_send_action
-#from aquaurban import http_route,  ws_route
-#from aquaurban.model import User, Community, System
-#from aquaurban.enum import ActionCode
-
-#setup()
-
-#comm = Community(host='m15.cloudmqtt.com', port=14689, username='mabrghbp', password='DY-djqEBxfAy')
