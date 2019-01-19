@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>{% block title %} Aqua Urban {% endblock %}</title>
-	{% include "includes/head.html" %}
-	{% block head %}
-	{% endblock head %}
-</head>
-<body>
-	<div class="container">
-		{% include "includes/body_header.html" %}
-		{% with messages = get_flashed_messages(with_categories=True) %}
-			{% if messages %}
-				{% for category, message in messages %}
-					<div class="alert alert-{{category}}">
-						{{message}}
+	<head>
+		<title>{% block title %} Aqua Urban {% endblock %}</title>
+		{% include "includes/head.html" %}
+		{% block head %}
+		{% endblock head %}
+	</head>
+	<body>
+		{% include "includes/header.html" %}
+		<main role="main" class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					{% with messages = get_flashed_messages(with_categories=True) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="alert alert-{{category}}">
+									{{message}}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+					{% block content %}
+					{% endblock %}
+				</div>
+				<!--<div class="col-md-4">
+					<div class="content-section">
+						<h3>Our Sidebar</h3>
+						<p class='text-muted'>You can put any information here you'd like.
+							<ul class="list-group">
+								<li class="list-group-item list-group-item-light">Latest Posts</li>
+								<li class="list-group-item list-group-item-light">Announcements</li>
+								<li class="list-group-item list-group-item-light">Calendars</li>
+								<li class="list-group-item list-group-item-light">etc</li>
+							</ul>
+						</p>
 					</div>
-				{% endfor %}
-			{% endif %}
-		{% endwith %}
-		{% block content %}
-		{% endblock content %}
-	</div>
-	{% include "includes/main_scripts.html" %}
-</body>
+				</div>-->
+			</div>
+		</main>
+		{% include "includes/main_scripts.html" %}
+	</body>
 </html>

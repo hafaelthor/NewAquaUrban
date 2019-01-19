@@ -1,40 +1,46 @@
 {% macro create_minipanel(id, system) %}
-	<div class="system-minipanel" data-id="{{id}}" data-system-id="{{system.id}}">
-		<h2>{{system.name}}</h2>
-		{% with bioinfo = system.bioinfos[-1] %}
-			<ul>
-				<li class="system-minipanel-bioinfo" data-bioinfo="waterlevel">
-					{% if bioinfo.waterlevel is not none %}
-						{{"above" if bioinfo.waterlevel else "below"}}
-					{% else %}
-						{{"unknown"}}
-					{% endif %}
-				</li>
-				<li class="system-minipanel-bioinfo" data-bioinfo="brightness">
-					{% if bioinfo.brightness is not none %}
-						{{bioinfo.brightness}}
-					{% else %}
-						{{"unknown"}}
-					{% endif %}
-				</li>
-				<li class="system-minipanel-bioinfo" data-bioinfo="temperature">
-					{% if bioinfo.temperature is not none %}
-						{{bioinfo.temperature}}
-					{% else %}
-						{{"unknown"}}
-					{% endif %}
-				</li>
-				<li class="system-minipanel-bioinfo" data-bioinfo="acidness">
-					{% if bioinfo.acidness is not none %}
-						{{bioinfo.acidness}}
-					{% else %}
-						{{"unknown"}}
-					{% endif %}
-				</li>
-				<button class="btn btn-outline-info system-minipanel-action" data-action="0">Turn Ledlights on</button>
-				<button class="btn btn-outline-info system-minipanel-action" data-action="1">Turn Ledlights off</button>
-			</ul>
-		{% endwith %}
+	<div class="panel panel-primary">	
+		<div class="system-minipanel" data-id="{{id}}" data-system-id="{{system.id}}">
+			<div class="panel-heading">
+				<h2 class="panel-title">{{system.name}}</h2>
+			</div>
+			<div class="panel-body">
+				{% with bioinfo = system.bioinfos[-1] %}
+					<ul>
+						<li class="system-minipanel-bioinfo" data-bioinfo="waterlevel">
+							{% if bioinfo.waterlevel is not none %}
+								{{"above" if bioinfo.waterlevel else "below"}}
+							{% else %}
+								{{"unknown"}}
+							{% endif %}
+						</li>
+						<li class="system-minipanel-bioinfo" data-bioinfo="brightness">
+							{% if bioinfo.brightness is not none %}
+								{{bioinfo.brightness}}
+							{% else %}
+								{{"unknown"}}
+							{% endif %}
+						</li>
+						<li class="system-minipanel-bioinfo" data-bioinfo="temperature">
+							{% if bioinfo.temperature is not none %}
+								{{bioinfo.temperature}}
+							{% else %}
+								{{"unknown"}}
+							{% endif %}
+						</li>
+						<li class="system-minipanel-bioinfo" data-bioinfo="acidness">
+							{% if bioinfo.acidness is not none %}
+								{{bioinfo.acidness}}
+							{% else %}
+								{{"unknown"}}
+							{% endif %}
+						</li>
+						<button class="btn btn-outline-info system-minipanel-action" data-action="0">Led on</button>
+						<button class="btn btn-outline-info system-minipanel-action" data-action="1">Leds off</button>
+					</ul>
+				{% endwith %}
+			</div>
+		</div>
 	</div>
 {% endmacro %}
 
