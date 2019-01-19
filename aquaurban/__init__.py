@@ -23,6 +23,6 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'danger'
 socketio = SocketIO(app, async_mode='threading')
 
-from aquaurban import model, enum, http_route, ws_route
+from aquaurban import http_route, ws_route
 from aquaurban.mqtt_route import MqttHub
 mqtt_hub = MqttHub()

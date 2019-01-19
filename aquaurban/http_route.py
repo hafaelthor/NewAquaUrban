@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 import aquaurban
 from aquaurban import app, db, bcrypt
-from aquaurban.enum import UserPermissionCode
+from aquaurban.code import UserPermissionCode
 from aquaurban.model import User, Community, System
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
 #from aquaurban.mqtt_route import listen_system
@@ -18,13 +18,14 @@ def about ():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register ():
-	if current_user.is_authenticated:
+	if current_user.is_authenticated and request.method == 'GET':
 		flash('You\'re already logged in. To register, first logout.', 'danger')
 		return redirect(url_for('index'))
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash, permission=UserPermissionCode.COMMON.value))
+		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash, 
+			permission=UserPermissionCode.COMMON.value if not form.as_dummy.data else UserPermissionCode.DUMMY.value))
 		db.session.commit()
 		flash(f'Account created for {form.username.data}!', 'success')
 		return redirect(url_for('index'))

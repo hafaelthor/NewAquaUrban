@@ -32,5 +32,5 @@ Users will have different permissions to act in the system, from those who can o
 
 ## Communication Funcionality
 
-(html, js, css)			user <- httpserver
-(bioinfo and actions)	user <-> wsserver <-> mqttclient(in server) <-> broker <-> mqttclient(in system)
+- (html, js, css)			user <- httpserver
+- (bioinfo and actions)	user <-> wsserver <-> mqttclient(in server) <-> broker <-> mqttclient(in system)

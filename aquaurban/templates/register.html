@@ -60,6 +60,10 @@
 						{{form.cpassword(class="form-control form-control-lg")}}
 					{% endif %}
 				</div>
+				<div class="form-check">
+					{{form.as_dummy(class="form-check-input")}}
+					{{form.as_dummy.label(class="form-check-label")}}
+				</div>
 			</fieldset>
 			<div class="form-group">
 				{{form.submit(class="btn btn-outline-info")}}

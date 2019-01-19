@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_socketio import Namespace
 
 import aquaurban
-from aquaurban.enum import ActionCode
+from aquaurban.code import ActionCode
 from aquaurban import socketio
 from aquaurban.model import System
 

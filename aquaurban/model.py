@@ -2,7 +2,7 @@ import time
 from flask_login import UserMixin
 
 from aquaurban import db, login_manager
-from aquaurban.enum import ActionCode, FEATURE_PERMISSION_TRESHOLD
+from aquaurban.code import ActionCode, FEATURE_PERMISSION_TRESHOLD
 
 @login_manager.user_loader
 def load_user (user_id):
