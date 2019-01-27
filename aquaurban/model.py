@@ -2,7 +2,7 @@ import time
 from flask_login import UserMixin
 
 from aquaurban import db, login_manager
-from aquaurban.code import ActionCode, FEATURE_PERMISSION_TRESHOLD
+from aquaurban.code import ActorCode, FEATURE_PERMISSION_TRESHOLD
 
 @login_manager.user_loader
 def load_user (user_id):
@@ -31,6 +31,7 @@ class Community (db.Model):
 	password 	= db.Column(db.String(20))
 
 	systems		= db.relationship('System', backref='community', lazy=True)
+	supervisors = db.relationship('User', backref='community', lazy=True)
 
 	def __repr__ (self):
 		return f'<COMMUNITY {self.id} | {self.name} on {self.host}:{self.port}>'
@@ -45,7 +46,7 @@ class System (db.Model):
 	actions			= db.relationship('Action', 	backref='system', lazy=True)
 
 	def safe_ids_for (self, feature):
-		ids = [self.user_id]
+		ids = [self.user_id] + [supervisor.id for supervisor in self.community.supervisors]
 		safe_ids  = []
 		for unchecked_id in ids:
 			if User.query.get(unchecked_id).permission >= FEATURE_PERMISSION_TRESHOLD[feature].value:
@@ -61,6 +62,7 @@ class Bioinfo (db.Model):
 	waterlevel 	= db.Column(db.Boolean)
 	brightness	= db.Column(db.Float)
 	temperature = db.Column(db.Float)
+	humidity	= db.Column(db.Float)
 	acidness	= db.Column(db.Float)
 	system_id	= db.Column(db.Integer, db.ForeignKey('system.id'), nullable=False)
 
@@ -70,21 +72,22 @@ class Bioinfo (db.Model):
 			"waterlevel": self.waterlevel,
 			"brightness": self.brightness,
 			"temperature": self.temperature,
+			"humidity": self.humidity,
 			"acidness": self.acidness,
 			"system_id": self.system_id
 		}
 
 	def __repr__ (self):
-		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC pH({self.acidness})] system_id={self.system_id}>'
+		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC {self.humidity}% pH({self.acidness}) at {self.timestamp}] system_id={self.system_id}>'
 
 class Action (db.Model):
 	id 			= db.Column(db.Integer, 							primary_key=True)
 	timestamp	= db.Column(db.TIMESTAMP)
-	code		= db.Column(db.SmallInteger, 						nullable=False)
-	data		= db.Column(db.SmallInteger)
+	actor		= db.Column(db.SmallInteger, 						nullable=False)
+	info		= db.Column(db.Integer)
 	system_id 	= db.Column(db.Integer, db.ForeignKey('system.id'), nullable=False)
 	user_id 	= db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	def __repr__ (self):
-		if self.user_id: return f'<ACTION {self.id} | {ActionCode(self.code).name} system_id={self.system_id} user_id={self.user_id}>'
-		else: return f'<ACTION {self.id} | {ActionCode(self.code).name} system_id={self.system_id} user_id=anonymous>'
+		if self.user_id: return f'<ACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {self.timestamp}] system_id={self.system_id} user_id={self.user_id}>'
+		else: return f'<AUTOACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {self.timestamp}] system_id={self.system_id}>'

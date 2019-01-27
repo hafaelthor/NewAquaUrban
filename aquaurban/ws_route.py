@@ -1,11 +1,12 @@
 from flask import request
 from flask_login import current_user
-from flask_socketio import Namespace
+import datetime
 
 import aquaurban
-from aquaurban.code import ActionCode
+from aquaurban import db
+from aquaurban.code import ActorCode
 from aquaurban import socketio
-from aquaurban.model import System
+from aquaurban.model import System, Action
 
 sids = dict()
 
@@ -19,10 +20,16 @@ def handle_connect ():
 
 @socketio.on('action', namespace='/system')
 def handle_action (data):
-	system = System.query.get(data["id"])
-	action = data["action"]
+	system_id	= data["id"]
+	system 		= System.query.get(system_id)
 	if current_user.id not in system.safe_ids_for('act'): return False
-	else: aquaurban.mqtt_hub.send_action(system, ActionCode(action))
+	actor 		= data["actor"]
+	info		= data["info"]
+	timestamp	= data["timestamp"]
+	action = Action(system_id=system_id, timestamp=datetime.datetime.fromtimestamp(timestamp), actor=actor, info=info, user_id=current_user.id)
+	db.session.add(action)
+	db.session.commit()
+	aquaurban.mqtt_hub.send_action(system, ActorCode(actor), info)
 
 def send_bioinfo (bioinfo):
 	for safe_id in bioinfo.system.safe_ids_for('bio') & sids.keys():

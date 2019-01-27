@@ -1,42 +1,36 @@
-{% macro create_minipanel(id, system) %}
+{% macro create_minipanel(name, id, system) %}
 	<div class="panel panel-primary">	
-		<div class="system-minipanel" data-id="{{id}}" data-system-id="{{system.id}}">
+		<div class="system-minipanel" data-id="{{name}}-{{id}}" data-system-id="{{system.id}}">
 			<div class="panel-heading">
-				<h2 class="panel-title">{{system.name}}</h2>
+				<h3 class="panel-title">{{system.name}}</h3>
 			</div>
 			<div class="panel-body">
-				{% with bioinfo = system.bioinfos[-1] %}
+				{% with bioinfo = system.bioinfos[-1] if system.bioinfos else aquaurban.model.Bioinfo() %}
 					<ul>
-						<li class="system-minipanel-bioinfo" data-bioinfo="waterlevel">
-							{% if bioinfo.waterlevel is not none %}
-								{{"above" if bioinfo.waterlevel else "below"}}
-							{% else %}
-								{{"unknown"}}
-							{% endif %}
+						<li>
+							Water Level: 
+							<span class="system-minipanel-bioinfo" data-bioinfo="waterlevel">{{("above" if bioinfo.waterlevel else "below") if bioinfo.waterlevel is not none else "??"}}</span>
 						</li>
-						<li class="system-minipanel-bioinfo" data-bioinfo="brightness">
-							{% if bioinfo.brightness is not none %}
-								{{bioinfo.brightness}}
-							{% else %}
-								{{"unknown"}}
-							{% endif %}
+						<li>
+							LDR Resistance:
+							<span class="system-minipanel-bioinfo" data-bioinfo="brightness">{{bioinfo.brightness if bioinfo.brightness is not none else "??"}}</span> <span>&#8486;</span>
 						</li>
-						<li class="system-minipanel-bioinfo" data-bioinfo="temperature">
-							{% if bioinfo.temperature is not none %}
-								{{bioinfo.temperature}}
-							{% else %}
-								{{"unknown"}}
-							{% endif %}
+						<li>
+							Temperature: 
+							<span class="system-minipanel-bioinfo" data-bioinfo="temperature">{{bioinfo.temperature if bioinfo.temperature is not none else "??"}}</span> Cº
 						</li>
-						<li class="system-minipanel-bioinfo" data-bioinfo="acidness">
-							{% if bioinfo.acidness is not none %}
-								{{bioinfo.acidness}}
-							{% else %}
-								{{"unknown"}}
-							{% endif %}
+						<li class="system-minipanel-bioinfo" data-bioinfo="humidity">
+							Humidity:
+							<span class="system-minipanel-bioinfo" data-bioinfo="humidity">{{bioinfo.humidity if bioinfo.humidity is not none else "??"}}</span> %
 						</li>
-						<button class="btn btn-outline-info system-minipanel-action" data-action="0">Led on</button>
-						<button class="btn btn-outline-info system-minipanel-action" data-action="1">Leds off</button>
+						<li>
+							Acidness:
+							<span class="system-minipanel-bioinfo" data-bioinfo="acidness">{{bioinfo.acidness if bioinfo.acidness is not none else "??"}}</span> pH
+						</li>
+						<button class="btn btn-outline-info system-minipanel-action" data-action="1" data-actor="0" data-info="1">Led on</button>
+						<button class="btn btn-outline-info system-minipanel-action" data-action="2" data-actor="0" data-info="0">Leds off</button>
+						<button class="btn btn-outline-info system-minipanel-action" data-action="3" data-actor="1" data-info="100">Feed with</button>
+						<input type="number" class="system-minipanel-action-info" data-to-action="3" value="100"/>
 					</ul>
 				{% endwith %}
 			</div>
@@ -55,22 +49,29 @@
 				that.$bioinfo[$(this).data('bioinfo')] = $(this);
 			});
 			this.$minipanel.find('.system-minipanel-action').each(function () {
-				that.$action[$(this).data('action')] = $(this);
 				$(this).on('click', function () {
-					send_action(that.$minipanel.data('system-id'), $(this).data('action'));
-				}); 
+					send_action(that.$minipanel.data('system-id'), $(this).data('actor'), $(this).data('info'), Math.floor((new Date).getTime() / 1e3));
+				});
+				that.$action[$(this).data('action')] = $(this);
+			});
+			this.$minipanel.find('.system-minipanel-action-info').each(function () {
+				$(this).on('input', function () {
+					that.$action[$(this).data('to-action')].data('info', $(this).val());
+				});
 			});
 		}
 
 		updateBioinfo (bioinfo) {
 			if (bioinfo.waterlevel != null) this.$bioinfo.waterlevel.html(bioinfo.waterlevel?'above':'below');
-			else this.$bioinfo.waterlevel.html('unknown');
+			else this.$bioinfo.waterlevel.html('??');
 			if (bioinfo.brightness != null) this.$bioinfo.brightness.html(bioinfo.brightness);
-			else this.$bioinfo.brightness.html('unknown');
+			else this.$bioinfo.brightness.html('??');
 			if (bioinfo.temperature != null) this.$bioinfo.temperature.html(bioinfo.temperature);
-			else this.$bioinfo.temperature.html('unknown');
+			else this.$bioinfo.temperature.html('??');
+			if (bioinfo.humidity != null) this.$bioinfo.humidity.html(bioinfo.humidity);
+			else this.$bioinfo.humidity.html('??');
 			if (bioinfo.acidness != null) this.$bioinfo.acidness.html(bioinfo.acidness);
-			else this.$bioinfo.acidness.html('unknown');
+			else this.$bioinfo.acidness.html('??');
 		}
 	}
 </script>

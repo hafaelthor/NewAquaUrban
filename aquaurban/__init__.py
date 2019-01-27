@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+import aquaurban
 
 app = Flask(__name__)
 app.config.from_object('config.default')
+app.add_template_global(aquaurban, 'aquaurban')
 '''
 THE CONFIG DIRECTORY IS IN THE ROOT DIRECTORY AND IGNORED BY GIT FOR SECURITY.
 TO MAKE THE APP RUN, CREATE YOUR OWN CONFIG PACKAGE OR DO AS YOU LIKE...

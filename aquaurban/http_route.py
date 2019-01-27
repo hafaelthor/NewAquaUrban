@@ -4,9 +4,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 import aquaurban
 from aquaurban import app, db, bcrypt
 from aquaurban.code import UserPermissionCode
-from aquaurban.model import User, Community, System
+from aquaurban.model import User, Community, System, Bioinfo
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
-#from aquaurban.mqtt_route import listen_system
 
 @app.route('/')
 def index ():
@@ -65,7 +64,7 @@ def account ():
 @login_required
 def create_system ():
 	form = CreateSystemForm()
-	form.community.choices = [(comm.id, f'{comm.host}:{comm.port}') for comm in Community.query.all()]
+	form.community.choices = [(comm.id, comm.name) for comm in Community.query.all()]
 	if form.validate_on_submit():
 		if bcrypt.check_password_hash(current_user.password, form.user_pass.data):
 			if not System.query.filter_by(user_id=current_user.id, name=form.name.data).first():

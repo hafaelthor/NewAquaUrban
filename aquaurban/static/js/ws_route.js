@@ -6,8 +6,14 @@ function on_bioinfo (bioinfo) {
 	systemMinipanels[bioinfo.system_id].updateBioinfo(bioinfo);
 }
 
-function send_action (id, action, data) {
-	system_websocket.emit('action', {id: id, action: action, data: data});
+function send_action (id, actor, info, timestamp) {
+	system_websocket.emit('action', 
+		{id: id, actor: actor, info: info, timestamp: timestamp});
+}
+
+function send_setting (id, setting, info) {
+	system_websocket.emit('setting', 
+		{id: id, setting: setting, info: info});
 }
 
 $(() => {

@@ -6,19 +6,22 @@ import time
 
 import aquaurban
 from aquaurban import db
-from aquaurban.model import Community, System, Bioinfo
-#from aquaurban.ws_route import send_bioinfo
+from aquaurban.model import Community, System, Bioinfo, Action
+from aquaurban.ws_route import send_bioinfo
 
 MQTT_ID = 'MAIN_SERVER'
 
 BIOINFO_TOPIC		= lambda system_id: f'{system_id}/bio'
 BIOINFO_TOPIC_CODE 	= r'(?P<system_id>\d+)/bio'
-BIOINFO_DATA_CODE	= r'((?P<timestamp>\d+);)?(?P<waterlevel>[01-]);(?P<brightness>(\d+\.?\d*)|-);(?P<temperature>(\d+\.?\d*)|-);(?P<acidness>(\d+\.?\d*)|-)'
+BIOINFO_DATA_CODE	= r'((?P<timestamp>\d+);)?(?P<waterlevel>[01-]);(?P<brightness>(\d+\.?\d*)|-);(?P<temperature>(\d+\.?\d*)|-);(?P<humidity>(\d+\.?\d*)|-);(?P<acidness>(\d+\.?\d*)|-)'
 
-ACTION_TOPIC		= lambda system_id: f'{system_id}/act'
-ACTION_TOPIC_CODE	= r'(?P<system_id>\d+)/act'
-ACTION_DATA 		= lambda code: f'{code}'
-ACTION_DATA_CODE	= r'(?P<code>\d)'
+ACTION_TOPIC			= lambda system_id: f'{system_id}/act'
+ACTION_TOPIC_CODE		= r'(?P<system_id>\d+)/act'
+ACTION_DATA 			= lambda actor, info: f'{actor};{info}'
+ACTION_DATA_CODE		= r'(?P<actor>\d+);(?P<info>\d+)'
+AUTOACTION_TOPIC		= lambda system_id: f'{system_id}/act/aut'
+AUTOACTION_TOPIC_CODE	= r'(?P<system_id>\d+)/act/aut'
+AUTOACTION_DATA_CODE	= r'((?P<timestamp>\d+);)?(?P<actor>\d+);(?P<info>\d+)'
 
 class MqttHub:
 	connections = dict()
@@ -47,6 +50,9 @@ class MqttHub:
 		bioinfo_topic = BIOINFO_TOPIC(system.id)
 		mqttc.subscribe(bioinfo_topic)
 		mqttc.message_callback_add(bioinfo_topic, self.on_bioinfo)
+		autoaction_topic = AUTOACTION_TOPIC(system.id)
+		mqttc.subscribe(autoaction_topic)
+		mqttc.message_callback_add(autoaction_topic, self.on_autoaction)
 
 	def on_bioinfo (self, mqttc, community_id, data):
 		m_topic	= re.match(BIOINFO_TOPIC_CODE, data.topic)
@@ -57,17 +63,36 @@ class MqttHub:
 		waterlevel_str 	= m_data.group('waterlevel')
 		brightness_str	= m_data.group('brightness')
 		temperature_str = m_data.group('temperature')
+		humidity_str	= m_data.group('humidity')
 		acidness_str	= m_data.group('acidness')
 
-		bioinfo.timestamp = datetime.datetime.fromtimestamp(int(timestamp_str) if timestamp_str is not None else time.time())
+		bioinfo.timestamp = datetime.datetime.fromtimestamp(int(timestamp_str if timestamp_str is not None else time.time()))
 		if waterlevel_str != '-': 	bioinfo.waterlevel 	= bool(int(waterlevel_str))
 		if brightness_str != '-': 	bioinfo.brightness 	= float(brightness_str)
 		if temperature_str != '-': 	bioinfo.temperature = float(temperature_str)
+		if humidity_str != '-': 	bioinfo.humidity 	= float(humidity_str)
 		if acidness_str != '-':		bioinfo.acidness	= float(acidness_str)
 
 		db.session.add(bioinfo)
 		db.session.commit()
-		aquaurban.ws_route.send_bioinfo(bioinfo)
+		send_bioinfo(bioinfo)
 
-	def send_action (self, system, action):
-		self[system.community_id].publish(ACTION_TOPIC(system.id), ACTION_DATA(action.value))
+	def on_autoaction (self, mqttc, community_id, data):
+		m_topic		= re.match(AUTOACTION_TOPIC_CODE, data.topic)
+		m_data 		= re.match(AUTOACTION_DATA_CODE, data.payload.decode())
+		autoaction 	= Action(system_id=int(m_topic.group('system_id')))
+
+		timestamp_str 	= m_data.group('timestamp')
+		actor_str		= m_data.group('actor')
+		info_str		= m_data.group('info')
+
+		autoaction.timestamp = datetime.datetime.fromtimestamp(int(timestamp_str if timestamp_str is not None else time.time()))
+		autoaction.actor 	= int(actor_str)
+		autoaction.info 	= int(info_str)
+
+		db.session.add(autoaction)
+		db.session.commit()
+
+	def send_action (self, system, actor, info):
+		print(f'{ACTION_TOPIC(system.id)}: {ACTION_DATA(actor.value, info)}')
+		self[system.community_id].publish(ACTION_TOPIC(system.id), ACTION_DATA(actor.value, info))

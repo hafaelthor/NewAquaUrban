@@ -5,9 +5,9 @@ class UserPermissionCode (enum.Enum):
 	COMMON 		= 1
 	SUPERVISOR 	= 2
 
-class ActionCode (enum.Enum):
-	LED_ON 	= 0
-	LED_OFF = 1
+class ActorCode (enum.Enum):
+	LED		= 0
+	FEEDER 	= 1
 
 FEATURE_PERMISSION_TRESHOLD = {
 	'bio': UserPermissionCode.DUMMY,
