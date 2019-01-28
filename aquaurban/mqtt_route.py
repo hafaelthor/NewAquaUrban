@@ -27,7 +27,7 @@ class MqttHub:
 	connections = dict()
 
 	def __init__ (self):
-		for community in Community.query.all():
+		for community in db.session.query(Community).all():
 			self.connections[community.id] = mqttc = mqtt.Client(MQTT_ID, userdata=community.id)
 			mqttc.on_connect = self.on_connect
 			if community.username and community.password:
@@ -41,7 +41,7 @@ class MqttHub:
 	def on_connect (self, mqttc, community_id, flags, rc):
 		print(' * mqtt: connection established')
 		print(' * mqtt: code =', rc)
-		systems = Community.query.get(community_id).systems
+		systems = db.session.query(Community).get(community_id).systems
 		for system in systems:
 			self.listen_system(system)
 

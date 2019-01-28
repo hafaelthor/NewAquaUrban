@@ -21,7 +21,7 @@ def handle_connect ():
 @socketio.on('action', namespace='/system')
 def handle_action (data):
 	system_id	= data["id"]
-	system 		= System.query.get(system_id)
+	system 		= db.session.query(System).get(system_id)
 	if current_user.id not in system.safe_ids_for('act'): return False
 	actor 		= data["actor"]
 	info		= data["info"]

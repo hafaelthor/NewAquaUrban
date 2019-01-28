@@ -1,92 +1,108 @@
 import time
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy import SmallInteger, Integer, Float, String, Boolean, TIMESTAMP
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, relationship
 from flask_login import UserMixin
 
 from aquaurban import db, login_manager
 from aquaurban.code import ActorCode, FEATURE_PERMISSION_TRESHOLD
 
+Base = declarative_base()
+
 @login_manager.user_loader
 def load_user (user_id):
-	return User.query.get(int(user_id))
+	return db.session.query(User).get(int(user_id))
 
-class User (db.Model, UserMixin):
-	id 				= db.Column(db.Integer, 	primary_key=True)
-	username		= db.Column(db.String(20), 	unique=True, 	nullable=False)
-	email	 		= db.Column(db.String(50), 	unique=True, 	nullable=False)
-	password 		= db.Column(db.String(30), 					nullable=False)
-	permission		= db.Column(db.SmallInteger, 				nullable=False)
-	community_id	= db.Column(db.Integer, db.ForeignKey('community.id'))
+class User (Base, UserMixin):
+	__tablename__ = 'user'
 
-	systems 		= db.relationship('System', backref='user', lazy=True)
-	actions			= db.relationship('Action', backref='user', lazy=True)
+	id 				= Column(Integer, 	primary_key=True)
+	username		= Column(String(20), unique=True, 	nullable=False)
+	email	 		= Column(String(50), unique=True, 	nullable=False)
+	password 		= Column(String(30), 				nullable=False)
+	permission		= Column(SmallInteger, 				nullable=False)
+	community_id	= Column(Integer, ForeignKey('community.id'))
+
+	systems 		= relationship('System', backref='user', lazy=True)
+	actions			= relationship('Action', backref='user', lazy=True)
 
 	def __repr__ (self):
 		return f'<USER {self.id} | username=\"{self.username}\" email=\"{self.email}\">'
 
-class Community (db.Model):
-	id 			= db.Column(db.Integer, 	primary_key=True)
-	name		= db.Column(db.String(40), 	nullable=False)
-	host 		= db.Column(db.String(40), 	nullable=False)
-	port 		= db.Column(db.Integer, 	nullable=False)
-	username 	= db.Column(db.String(20))
-	password 	= db.Column(db.String(20))
+class Community (Base):
+	__tablename__ = 'community'
 
-	systems		= db.relationship('System', backref='community', lazy=True)
-	supervisors = db.relationship('User', backref='community', lazy=True)
+	id 			= Column(Integer, 	primary_key=True)
+	name		= Column(String(40), nullable=False)
+	host 		= Column(String(40), nullable=False)
+	port 		= Column(Integer, 	nullable=False)
+	username 	= Column(String(20))
+	password 	= Column(String(20))
+
+	systems		= relationship('System', backref='community', lazy=True)
+	supervisors = relationship('User', backref='community', lazy=True)
 
 	def __repr__ (self):
 		return f'<COMMUNITY {self.id} | {self.name} on {self.host}:{self.port}>'
 
-class System (db.Model):
-	id 				= db.Column(db.Integer, 								primary_key=True)
-	name 			= db.Column(db.String(20), 								nullable=False)
-	user_id			= db.Column(db.Integer, db.ForeignKey('user.id'), 		nullable=False)
-	community_id	= db.Column(db.Integer, db.ForeignKey('community.id'), 	nullable=False)
+class System (Base):
+	__tablename__ = 'system'
 
-	bioinfos		= db.relationship('Bioinfo', 	backref='system', lazy=True)
-	actions			= db.relationship('Action', 	backref='system', lazy=True)
+	id 				= Column(Integer, 								primary_key=True)
+	name 			= Column(String(20), 							nullable=False)
+	user_id			= Column(Integer, ForeignKey('user.id'), 		nullable=False)
+	community_id	= Column(Integer, ForeignKey('community.id'), 	nullable=False)
+
+	bioinfos		= relationship('Bioinfo', 	backref='system', lazy=True)
+	actions			= relationship('Action', 	backref='system', lazy=True)
 
 	def safe_ids_for (self, feature):
 		ids = [self.user_id] + [supervisor.id for supervisor in self.community.supervisors]
 		safe_ids  = []
 		for unchecked_id in ids:
-			if User.query.get(unchecked_id).permission >= FEATURE_PERMISSION_TRESHOLD[feature].value:
+			if db.session.query(User).get(unchecked_id).permission >= FEATURE_PERMISSION_TRESHOLD[feature].value:
 				safe_ids.append(unchecked_id)
 		return safe_ids
 
 	def __repr__ (self):
 		return f'<SYSTEM {self.id} | name=\"{self.name}\">'
 
-class Bioinfo (db.Model):
-	id 			= db.Column(db.Integer, primary_key=True)
-	timestamp	= db.Column(db.TIMESTAMP)
-	waterlevel 	= db.Column(db.Boolean)
-	brightness	= db.Column(db.Float)
-	temperature = db.Column(db.Float)
-	humidity	= db.Column(db.Float)
-	acidness	= db.Column(db.Float)
-	system_id	= db.Column(db.Integer, db.ForeignKey('system.id'), nullable=False)
+class Bioinfo (Base):
+	__tablename__ = 'bioinfo'
+
+	id 			= Column(Integer, primary_key=True)
+	timestamp	= Column(TIMESTAMP)
+	waterlevel 	= Column(Boolean)
+	brightness	= Column(Float)
+	temperature = Column(Float)
+	humidity	= Column(Float)
+	acidness	= Column(Float)
+	system_id	= Column(Integer, ForeignKey('system.id'), nullable=False)
 
 	def to_dict (self):
 		return {
-			"timestamp": time.mktime(self.timestamp.timetuple()),
-			"waterlevel": self.waterlevel,
-			"brightness": self.brightness,
-			"temperature": self.temperature,
-			"humidity": self.humidity,
-			"acidness": self.acidness,
-			"system_id": self.system_id
+			"timestamp": 	time.mktime(self.timestamp.timetuple()),
+			"waterlevel": 	self.waterlevel,
+			"brightness": 	self.brightness,
+			"temperature": 	self.temperature,
+			"humidity": 	self.humidity,
+			"acidness": 	self.acidness,
+			"system_id": 	self.system_id
 		}
 
 	def __repr__ (self):
 		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC {self.humidity}% pH({self.acidness}) at {self.timestamp}] system_id={self.system_id}>'
 
-class Action (db.Model):
-	id 			= db.Column(db.Integer, 							primary_key=True)
-	timestamp	= db.Column(db.TIMESTAMP)
-	actor		= db.Column(db.SmallInteger, 						nullable=False)
-	info		= db.Column(db.Integer)
-	system_id 	= db.Column(db.Integer, db.ForeignKey('system.id'), nullable=False)
-	user_id 	= db.Column(db.Integer, db.ForeignKey('user.id'))
+class Action (Base):
+	__tablename__ = 'action'
+
+	id 			= Column(Integer, 							primary_key=True)
+	timestamp	= Column(TIMESTAMP)
+	actor		= Column(SmallInteger, 						nullable=False)
+	info		= Column(Integer)
+	system_id 	= Column(Integer, ForeignKey('system.id'), 	nullable=False)
+	user_id 	= Column(Integer, ForeignKey('user.id'))
 
 	def __repr__ (self):
 		if self.user_id: return f'<ACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {self.timestamp}] system_id={self.system_id} user_id={self.user_id}>'

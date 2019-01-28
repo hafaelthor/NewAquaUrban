@@ -37,7 +37,7 @@ def login ():
 		return redirect(url_for('index'))
 	form = LoginForm()
 	if form.validate_on_submit():
-		user = User.query.filter_by(email=form.email.data).first()
+		user = db.session.query(User).filter_by(email=form.email.data).first()
 		if user:
 			if bcrypt.check_password_hash(user.password, form.password.data):
 				login_user(user, remember=form.remember.data)
@@ -64,10 +64,10 @@ def account ():
 @login_required
 def create_system ():
 	form = CreateSystemForm()
-	form.community.choices = [(comm.id, comm.name) for comm in Community.query.all()]
+	form.community.choices = [(comm.id, comm.name) for comm in db.session.query(Community).all()]
 	if form.validate_on_submit():
 		if bcrypt.check_password_hash(current_user.password, form.user_pass.data):
-			if not System.query.filter_by(user_id=current_user.id, name=form.name.data).first():
+			if not db.session.query(System).filter_by(user_id=current_user.id, name=form.name.data).first():
 				system = System(name=form.name.data, user_id=current_user.id, community_id=form.community.data)
 				db.session.add(system)
 				db.session.commit()

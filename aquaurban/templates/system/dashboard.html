@@ -13,7 +13,7 @@
 		{% endfor %}
 		{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
 			<h2>Communal Systems</h2>
-			{% for system in aquaurban.model.Community.query.get(current_user.community_id).systems %}
+			{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
 				{% if system.user_id != current_user.id %}
 					{{create_minipanel("community", loop.index, system)}}
 				{% endif %}
