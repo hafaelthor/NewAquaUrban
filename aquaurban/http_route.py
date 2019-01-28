@@ -1,8 +1,9 @@
 from flask import render_template, send_from_directory, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
+import bcrypt
 
 import aquaurban
-from aquaurban import app, db, bcrypt
+from aquaurban import app, db
 from aquaurban.code import UserPermissionCode
 from aquaurban.model import User, Community, System, Bioinfo
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
@@ -22,7 +23,7 @@ def register ():
 		return redirect(url_for('index'))
 	form = RegistrationForm()
 	if form.validate_on_submit():
-		pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+		pw_hash = bcrypt.hashpw(form.password.data.encode(), bcrypt.gensalt()).decode()
 		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash, 
 			permission=UserPermissionCode.COMMON.value if not form.as_dummy.data else UserPermissionCode.DUMMY.value))
 		db.session.commit()
@@ -39,7 +40,7 @@ def login ():
 	if form.validate_on_submit():
 		user = db.session.query(User).filter_by(email=form.email.data).first()
 		if user:
-			if bcrypt.check_password_hash(user.password, form.password.data):
+			if bcrypt.hashpw(form.password.data.encode(), user.password.encode()) == user.password.encode():
 				login_user(user, remember=form.remember.data)
 				next_url = request.args.get('next')
 				flash('Login successful!', 'success')
