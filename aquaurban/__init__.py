@@ -5,7 +5,7 @@ from flask_socketio import SocketIO
 import aquaurban
 
 app = Flask(__name__)
-app.config.from_object('config.default')
+app.config.from_object('config.mqtt_dev')
 app.add_template_global(aquaurban, 'aquaurban')
 '''
 THE CONFIG DIRECTORY IS IN THE ROOT DIRECTORY AND IGNORED BY GIT FOR SECURITY.
@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 TO USE THE DATABASE WITH SQLALCHEMY, YOU NEED TO ADD A CONFIG VARIABLE
 CALLED "SQLALCHEMY_DATABASE_URI" WITH THE FILEPATH RELATIVE TO THE
 "aquaurban" PACKAGE FOLDER.
-and you should use db.create_all()
+and you should run "db.create_all()" to create the database with all tables
 '''
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'

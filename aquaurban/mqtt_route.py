@@ -1,6 +1,5 @@
 import paho.mqtt.client as mqtt
 import re
-import datetime
 import time
 
 
@@ -66,7 +65,7 @@ class MqttHub:
 		humidity_str	= m_data.group('humidity')
 		acidness_str	= m_data.group('acidness')
 
-		bioinfo.timestamp = datetime.datetime.fromtimestamp(int(timestamp_str if timestamp_str is not None else time.time()))
+		bioinfo.timestamp = int(timestamp_str if timestamp_str is not None else time.time())
 		if waterlevel_str != '-': 	bioinfo.waterlevel 	= bool(int(waterlevel_str))
 		if brightness_str != '-': 	bioinfo.brightness 	= float(brightness_str)
 		if temperature_str != '-': 	bioinfo.temperature = float(temperature_str)
@@ -86,9 +85,9 @@ class MqttHub:
 		actor_str		= m_data.group('actor')
 		info_str		= m_data.group('info')
 
-		autoaction.timestamp = datetime.datetime.fromtimestamp(int(timestamp_str if timestamp_str is not None else time.time()))
-		autoaction.actor 	= int(actor_str)
-		autoaction.info 	= int(info_str)
+		autoaction.timestamp 	= int(timestamp_str if timestamp_str is not None else time.time())
+		autoaction.actor 		= int(actor_str)
+		autoaction.info 		= int(info_str)
 
 		db.session.add(autoaction)
 		db.session.commit()

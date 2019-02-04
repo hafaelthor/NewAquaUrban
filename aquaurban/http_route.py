@@ -67,7 +67,7 @@ def create_system ():
 	form = CreateSystemForm()
 	form.community.choices = [(comm.id, comm.name) for comm in db.session.query(Community).all()]
 	if form.validate_on_submit():
-		if bcrypt.check_password_hash(current_user.password, form.user_pass.data):
+		if bcrypt.hashpw(form.user_pass.data.encode(), current_user.password.encode()) == current_user.password.encode():
 			if not db.session.query(System).filter_by(user_id=current_user.id, name=form.name.data).first():
 				system = System(name=form.name.data, user_id=current_user.id, community_id=form.community.data)
 				db.session.add(system)

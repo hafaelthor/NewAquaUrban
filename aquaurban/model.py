@@ -1,6 +1,6 @@
 import time
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import SmallInteger, Integer, Float, String, Boolean, TIMESTAMP
+from sqlalchemy import SmallInteger, Integer, BigInteger, Float, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from flask_login import UserMixin
@@ -72,7 +72,7 @@ class Bioinfo (Base):
 	__tablename__ = 'bioinfo'
 
 	id 			= Column(Integer, primary_key=True)
-	timestamp	= Column(TIMESTAMP)
+	timestamp	= Column(BigInteger)
 	waterlevel 	= Column(Boolean)
 	brightness	= Column(Float)
 	temperature = Column(Float)
@@ -82,7 +82,7 @@ class Bioinfo (Base):
 
 	def to_dict (self):
 		return {
-			"timestamp": 	time.mktime(self.timestamp.timetuple()),
+			"timestamp": 	self.timestamp,
 			"waterlevel": 	self.waterlevel,
 			"brightness": 	self.brightness,
 			"temperature": 	self.temperature,
@@ -98,7 +98,7 @@ class Action (Base):
 	__tablename__ = 'action'
 
 	id 			= Column(Integer, 							primary_key=True)
-	timestamp	= Column(TIMESTAMP)
+	timestamp	= Column(BigInteger)
 	actor		= Column(SmallInteger, 						nullable=False)
 	info		= Column(Integer)
 	system_id 	= Column(Integer, ForeignKey('system.id'), 	nullable=False)

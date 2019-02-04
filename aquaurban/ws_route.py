@@ -26,7 +26,7 @@ def handle_action (data):
 	actor 		= data["actor"]
 	info		= data["info"]
 	timestamp	= data["timestamp"]
-	action = Action(system_id=system_id, timestamp=datetime.datetime.fromtimestamp(timestamp), actor=actor, info=info, user_id=current_user.id)
+	action = Action(system_id=system_id, timestamp=timestamp, actor=actor, info=info, user_id=current_user.id)
 	db.session.add(action)
 	db.session.commit()
 	aquaurban.mqtt_hub.send_action(system, ActorCode(actor), info)
