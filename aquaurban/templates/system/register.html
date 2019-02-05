@@ -1,0 +1,59 @@
+{% extends 'frame.html' %}
+
+{% block title %} Registration - {{super()}} {% endblock %}
+
+{% block content %}
+	<div class="content-frame">
+		<form method="POST" action="">
+			{{form.hidden_tag()}}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Register System</legend>
+				<div class="form-group">
+					{{form.name.label(class="form-control-label")}}
+					{% if form.name.errors %}
+						{{form.name(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.email.errors %}
+								<span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.name(class="form-control form-control-lg")}}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{form.community.label(class="form-control-label")}}
+					{% if form.community.errors %}
+						{{form.community(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.email.errors %}
+								<span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.community(class="form-control form-control-lg")}}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{form.user_pass.label(class="form-control-label")}}
+					{% if form.user_pass.errors %}
+						{{form.user_pass(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in form.user_pass.errors %}
+								<span>{{error}}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{form.user_pass(class="form-control form-control-lg")}}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{form.submit(class="btn btn-outline-info")}}
+			</div>
+			<small class="text-muted ml-2">
+				<a href="#">Forgot Password?</a>
+			</small>
+		</form>
+	</div>
+{% endblock content %}
