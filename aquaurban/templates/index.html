@@ -1,9 +1,9 @@
 {% extends 'frame.html' %}
 
-{% block title %} Home Page - {{super()}} {% endblock %}
+{% block title %} {{_("Home Page")}} - {{super()}} {% endblock %}
 
 {% block content %}
-	<article class="content-section">
-		<h1>Home Page</h1>
-	</article>
+	<div class="content-frame">
+		<h1>{{_("Home Page")}}</h1>
+	</div>
 {% endblock content %}

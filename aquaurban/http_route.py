@@ -1,12 +1,20 @@
 from flask import render_template, send_from_directory, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_babel import gettext
 import bcrypt
 
 import aquaurban
-from aquaurban import app, db
+from aquaurban import app, db, babel
 from aquaurban.code import UserPermissionCode
 from aquaurban.model import User, Community, System, Bioinfo
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
+
+AVAILABLE_LOCALES = ['en', 'pt']
+
+@babel.localeselector
+def get_locale ():
+	#return request.accept_languages.best_match(AVAILABLE_LOCALES)
+	return 'pt'
 
 @app.route('/')
 def index ():
@@ -61,9 +69,9 @@ def logout ():
 def account ():
 	return render_template('account.html')
 
-@app.route('/system/create', methods=['GET', 'POST'])
+@app.route('/system/register', methods=['GET', 'POST'])
 @login_required
-def create_system ():
+def register_system ():
 	form = CreateSystemForm()
 	form.community.choices = [(comm.id, comm.name) for comm in db.session.query(Community).all()]
 	if form.validate_on_submit():
@@ -77,7 +85,7 @@ def create_system ():
 				return redirect(url_for('index'))
 			else: flash('You already used that name in other system. Use another.', 'danger')
 		else: flash('Wrong password. Try again.', 'danger')
-	return render_template('system/create.html', form=form)
+	return render_template('system/register.html', form=form)
 
 @app.route('/system/dashboard')
 @login_required

@@ -30,4 +30,4 @@ class CreateSystemForm (FlaskForm):
 	name		= StringField('System Name', validators=[DataRequired(), Length(max=20)])
 	community	= SelectField('Community', coerce=int)
 	user_pass	= PasswordField('User Password', validators=[DataRequired()])
-	submit 		= SubmitField('Create')
+	submit 		= SubmitField('Register')

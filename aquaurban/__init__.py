@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+from flask_babel import Babel
 import aquaurban
 
 app = Flask(__name__)
@@ -23,6 +24,19 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'danger'
 socketio = SocketIO(app, async_mode='threading')
+babel = Babel(app)
+'''
+THE CONFIGURATION USED BY BABEL IS IN THE KEY "BABEL_DEFAULT_LOCALE"
+WICH STORES THE DEFAULT LOCALE, SUCH AS 'en', etc. 
+
+TO USE/UPDATE THE TRANSLATIONS, YOU NEED TO USE THE FOLLOWING INSTRUCTIONS IN THE "NewAquaUrban/" FOLDER:
+pybabel extract -F aquaurban/babel.cfg -o aquaurban/messages.pot . 			#register in "aquaurban/messages.pot" all gettext() in python and _() in jinja2
+pybabel init -i aquaurban/messages.pot -d aquaurban/translations -l pt 		#initialize a portuguese (pt) translation text file
+pybabel update -i aquaurban/messages.pot -d aquaurban/translations -l pt 	#update a portuguese (pt) translation text file
+pybabel compile -d aquaurban/translations 									#compile all translations into binary files
+
+OR SIMPLY RUN "sh update-babel.sh" IF ON A LINUX SYSTEM 
+'''
 
 from aquaurban import http_route, ws_route
 from aquaurban.mqtt_route import MqttHub

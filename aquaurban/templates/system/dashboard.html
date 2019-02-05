@@ -7,17 +7,33 @@
 	{% from "system/includes/minipanel.html" import create_minipanel %}
 
 	<div class="container-fluid">
-		<h2>Personal Systems</h2>
-		{% for system in current_user.systems %}
-			{{create_minipanel("personal", loop.index, system)}}
-		{% endfor %}
-		{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
-			<h2>Communal Systems</h2>
-			{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
-				{% if system.user_id != current_user.id %}
-					{{create_minipanel("community", loop.index, system)}}
-				{% endif %}
+		<h1>Personal Systems</h1>
+		{% with loop_ns = namespace(i=0) %}
+			{% for system in current_user.systems %}
+				{{create_minipanel("personal", loop.index, system)}}
+				{% set loop_ns.i = loop_ns.i + 1 %}
 			{% endfor %}
+			{% if loop_ns.i == 0 %}
+				<div class="content-frame">
+					<p class="text-muted">You currently don't have any systems registered</p>
+				</div>
+			{% endif %}
+		{% endwith %}
+		{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
+			<h1>Communal Systems</h1>
+			{% with loop_ns = namespace(i=0) %}
+				{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
+					{% if system.user_id != current_user.id %}
+						{{create_minipanel("community", loop.index, system)}}
+						{% set loop_ns.i = loop_ns.i + 1 %}
+					{% endif %}
+				{% endfor %}
+				{% if loop_ns.i == 0 %}
+					<div class="content-frame">
+						<p class="text-muted">You currently don't have any systems registered</p>
+					</div>
+				{% endif %}
+			{% endwith %}
 		{% endif %}
 	</div>
 

@@ -3,5 +3,6 @@
 {% block title %} Your Account - {{super()}} {% endblock %}
 
 {% block content %}
-	<h2>Account Page</h2>
+	<h1>Account Page</h1>
+	<h2>{{current_user.username}}</h2>
 {% endblock content %}
