@@ -1,17 +1,17 @@
 {% extends 'frame.html' %}
 
-{% block title %} Home Page - {{super()}} {% endblock %}
+{% block title %} {{_("About Us")}} - {{super()}} {% endblock %}
 
 {% block content %}
 	<div class="content-frame">
-		<h2>The Main Blueprint</h2>
-		<h3>System</h3>
-		<p>Aquaponic systems will read biological information and perform actions. The system will listening for instructions while sending biological information using the mqtt protocol if it has a wireless hotspot. To improve homeostasis, it will act in the system keeping biological factors steady.</p>
+		<h2>{{_("The Main Blueprint")}}</h2>
+		<h3>{{_("System")}}</h3>
+		<p>{{_("Aquaponic systems will read biological information and perform actions. It will be listening for instructions while sending biological information using the MQTT protocol when connected to a wireless hotspot. To improve homeostasis, it will act in the system keeping biological factors in equilibrium.")}}</p>
 
-		<h3>Community</h3>
-		<p>Communities will be hosted as brokers that will intermediate the communication between systems and users. In each community will be controlled by supervisors that will have open access to all systems inside a community.</p>
+		<h3>{{_("Community")}}</h3>
+		<p>{{_("Communities will be hosted as MQTT brokers that will intermediate the communication between systems and users. Each community will be controlled by supervisors that will have open access to all systems inside a community.")}}</p>
 
-		<h3>User and Supervisor</h3>
-		<p>Users will have different permissions to act in the system, from those who can only read, to major supervisors who will have complete access to all systems inside a given community and it's subcommunities.</p>
+		<h3>{{_("User and Supervisor")}}</h3>
+		<p>{{_("Users will have different permissions to act in the system, from those who can only read to major supervisors who can have complete access to all systems inside a given community and it's subcommunities.")}}</p>
 	</div>
 {% endblock content %}

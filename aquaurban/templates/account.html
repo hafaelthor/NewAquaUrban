@@ -1,8 +1,7 @@
 {% extends 'frame.html' %}
 
-{% block title %} Your Account - {{super()}} {% endblock %}
+{% block title %} {{_("Your Account")}} - {{super()}} {% endblock %}
 
 {% block content %}
-	<h1>Account Page</h1>
-	<h2>{{current_user.username}}</h2>
+	<h1>{{current_user.username}}</h1>
 {% endblock content %}

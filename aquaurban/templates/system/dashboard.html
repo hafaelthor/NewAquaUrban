@@ -1,13 +1,13 @@
 {% extends 'frame.html' %}
 
-{% block title %} Systems Dashboard - {{super()}} {% endblock %}
+{% block title %} {{_("Systems Dashboard")}} - {{super()}} {% endblock %}
 
 {% block content %}
 	{% include "system/includes/minipanel.html" %}
 	{% from "system/includes/minipanel.html" import create_minipanel %}
 
 	<div class="container-fluid">
-		<h1>Personal Systems</h1>
+		<h1>{{_("Personal Systems")}}</h1>
 		{% with loop_ns = namespace(i=0) %}
 			{% for system in current_user.systems %}
 				{{create_minipanel("personal", loop.index, system)}}
@@ -15,12 +15,12 @@
 			{% endfor %}
 			{% if loop_ns.i == 0 %}
 				<div class="content-frame">
-					<p class="text-muted">You currently don't have any systems registered</p>
+					<p class="text-muted">{{_("You currently don't have any systems registered")}}</p>
 				</div>
 			{% endif %}
 		{% endwith %}
 		{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
-			<h1>Communal Systems</h1>
+			<h1>{{_("Communal Systems")}}</h1>
 			{% with loop_ns = namespace(i=0) %}
 				{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
 					{% if system.user_id != current_user.id %}
@@ -30,7 +30,7 @@
 				{% endfor %}
 				{% if loop_ns.i == 0 %}
 					<div class="content-frame">
-						<p class="text-muted">You currently don't have any systems registered</p>
+						<p class="text-muted">{{_("You currently don't have any systems registered")}}</p>
 					</div>
 				{% endif %}
 			{% endwith %}

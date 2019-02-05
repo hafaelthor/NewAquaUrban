@@ -1,6 +1,6 @@
 {% extends 'frame.html' %}
 
-{% block title %} Login - {{super()}} {% endblock %}
+{% block title %} {{_("Login")}} - {{super()}} {% endblock %}
 
 {% block content %}
 	<div class="content-frame">
@@ -43,14 +43,14 @@
 				{{form.submit(class="btn btn-outline-info")}}
 			</div>
 			<small class="text-muted ml-2">
-				<a href="#">Forgot Password?</a>
+				<a href="#">{{_("Forgot Password?")}}</a>
 			</small>
 		</form>
 	</div>
 	<div class="border-top pt-3">
 		<small class="text-muted">
-			Need An Account?
-			<a class="ml-2" href="{{url_for('register')}}">Create One</a>
+			{{_("Need An Account?")}}
+			<a class="ml-2" href="{{url_for('register')}}">{{_("Create One")}}</a>
 		</small>
 	</div>
 {% endblock content %}

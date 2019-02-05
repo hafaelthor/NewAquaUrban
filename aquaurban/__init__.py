@@ -35,7 +35,9 @@ pybabel init -i aquaurban/messages.pot -d aquaurban/translations -l pt 		#initia
 pybabel update -i aquaurban/messages.pot -d aquaurban/translations -l pt 	#update a portuguese (pt) translation text file
 pybabel compile -d aquaurban/translations 									#compile all translations into binary files
 
-OR SIMPLY RUN "sh update-babel.sh" IF ON A LINUX SYSTEM 
+IF ON A LINUX SYSTEM, SIMPLY RUN:
+sh babel-register.sh
+sh babel-compile.sh
 '''
 
 from aquaurban import http_route, ws_route

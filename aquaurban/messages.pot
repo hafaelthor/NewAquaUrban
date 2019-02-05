@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-04 22:54-0300\n"
+"POT-Creation-Date: 2019-02-05 16:19-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,291 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
+#: aquaurban/form.py:11
+msgid "Username"
+msgstr ""
+
+#: aquaurban/form.py:14 aquaurban/form.py:36
+msgid "Email"
+msgstr ""
+
+#: aquaurban/form.py:18 aquaurban/form.py:37
+msgid "Password"
+msgstr ""
+
+#: aquaurban/form.py:21
+msgid "Confirm Password"
+msgstr ""
+
+#: aquaurban/form.py:24
+msgid "As Dummy?"
+msgstr ""
+
+#: aquaurban/form.py:25
+msgid "Sign Up"
+msgstr ""
+
+#: aquaurban/form.py:38
+msgid "Remember Me"
+msgstr ""
+
+#: aquaurban/form.py:39 aquaurban/templates/includes/header.html:20
+#: aquaurban/templates/login.html:3
+msgid "Login"
+msgstr ""
+
+#: aquaurban/form.py:42
+msgid "System Name"
+msgstr ""
+
+#: aquaurban/form.py:43 aquaurban/templates/about.html:11
+msgid "Community"
+msgstr ""
+
+#: aquaurban/form.py:44
+msgid "User Password"
+msgstr ""
+
+#: aquaurban/form.py:45 aquaurban/templates/includes/header.html:21
+#: aquaurban/templates/register.html:3
+msgid "Register"
+msgstr ""
+
+#: aquaurban/quick_message.py:4
+msgid "You're already logged in. To register, first logout."
+msgstr ""
+
+#: aquaurban/quick_message.py:6
+#, python-format
+msgid "%(user)s Account created!"
+msgstr ""
+
+#: aquaurban/quick_message.py:9
+msgid "You're already logged in. To switch user, first logout."
+msgstr ""
+
+#: aquaurban/quick_message.py:11 aquaurban/quick_message.py:25
+msgid "Wrong password. Try again."
+msgstr ""
+
+#: aquaurban/quick_message.py:13
+msgid "E-Mail not known. Try again."
+msgstr ""
+
+#: aquaurban/quick_message.py:15
+msgid "Login successful!"
+msgstr ""
+
+#: aquaurban/quick_message.py:18
+msgid "Logout successful!"
+msgstr ""
+
+#: aquaurban/quick_message.py:21
+msgid "System registered succesfully"
+msgstr ""
+
+#: aquaurban/quick_message.py:23
+msgid "You already used that name in other system. Use another."
+msgstr ""
+
+#: aquaurban/quick_message.py:31
+msgid "Username is required."
+msgstr ""
+
+#: aquaurban/quick_message.py:32
+msgid "Username or too short or too long. Choose another."
+msgstr ""
+
+#: aquaurban/quick_message.py:33
+msgid "Username already taken. Choose another."
+msgstr ""
+
+#: aquaurban/quick_message.py:34
+msgid "E-mail is required."
+msgstr ""
+
+#: aquaurban/quick_message.py:35
+msgid "Invalid E-mail."
+msgstr ""
+
+#: aquaurban/quick_message.py:36
+msgid "E-mail is too long. Chose another."
+msgstr ""
+
+#: aquaurban/quick_message.py:37
+msgid "E-mail already taken. Choose another."
+msgstr ""
+
+#: aquaurban/quick_message.py:38
+msgid "Password is required."
+msgstr ""
+
+#: aquaurban/quick_message.py:39
+msgid "Password too long. Choose another."
+msgstr ""
+
+#: aquaurban/quick_message.py:40
+msgid "Confirm password."
+msgstr ""
+
+#: aquaurban/quick_message.py:41
+msgid "The passwords don't match."
+msgstr ""
+
+#: aquaurban/templates/about.html:3 aquaurban/templates/includes/header.html:10
+msgid "About Us"
+msgstr ""
+
+#: aquaurban/templates/about.html:7
+msgid "The Main Blueprint"
+msgstr ""
+
+#: aquaurban/templates/about.html:8
+msgid "System"
+msgstr ""
+
+#: aquaurban/templates/about.html:9
+msgid ""
+"Aquaponic systems will read biological information and perform actions. "
+"It will be listening for instructions while sending biological "
+"information using the MQTT protocol when connected to a wireless hotspot."
+" To improve homeostasis, it will act in the system keeping biological "
+"factors in equilibrium."
+msgstr ""
+
+#: aquaurban/templates/about.html:12
+msgid ""
+"Communities will be hosted as MQTT brokers that will intermediate the "
+"communication between systems and users. Each community will be "
+"controlled by supervisors that will have open access to all systems "
+"inside a community."
+msgstr ""
+
+#: aquaurban/templates/about.html:14
+msgid "User and Supervisor"
+msgstr ""
+
+#: aquaurban/templates/about.html:15
+msgid ""
+"Users will have different permissions to act in the system, from those "
+"who can only read to major supervisors who can have complete access to "
+"all systems inside a given community and it's subcommunities."
+msgstr ""
+
+#: aquaurban/templates/account.html:3
+msgid "Your Account"
+msgstr ""
+
 #: aquaurban/templates/index.html:3 aquaurban/templates/index.html:7
 msgid "Home Page"
 msgstr ""
 
 #: aquaurban/templates/login.html:10
 msgid "Welcome Back"
+msgstr ""
+
+#: aquaurban/templates/login.html:46
+#: aquaurban/templates/system/register.html:55
+msgid "Forgot Password?"
+msgstr ""
+
+#: aquaurban/templates/login.html:52
+msgid "Need An Account?"
+msgstr ""
+
+#: aquaurban/templates/login.html:53
+msgid "Create One"
+msgstr ""
+
+#: aquaurban/templates/register.html:10
+msgid "Join Today"
+msgstr ""
+
+#: aquaurban/templates/register.html:75
+msgid "Already Have An Account?"
+msgstr ""
+
+#: aquaurban/templates/register.html:76
+msgid "Sign In"
+msgstr ""
+
+#: aquaurban/templates/includes/header.html:15
+msgid "Dashboard"
+msgstr ""
+
+#: aquaurban/templates/includes/header.html:16
+#: aquaurban/templates/system/register.html:10
+msgid "Register System"
+msgstr ""
+
+#: aquaurban/templates/includes/header.html:17
+msgid "Account"
+msgstr ""
+
+#: aquaurban/templates/includes/header.html:18
+msgid "Logout"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:3
+msgid "Systems Dashboard"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:10
+msgid "Personal Systems"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:18
+#: aquaurban/templates/system/dashboard.html:33
+msgid "You currently don't have any systems registered"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:23
+msgid "Communal Systems"
+msgstr ""
+
+#: aquaurban/templates/system/register.html:3
+msgid "System Registration"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:11
+msgid "Water Level"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/includes/minipanel.html:65
+msgid "above"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/includes/minipanel.html:65
+msgid "below"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:15
+msgid "LDR Resistance"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:19
+msgid "Temperature"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:23
+msgid "Humidity"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:27
+msgid "Acidness"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:30
+msgid "Led on"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:31
+msgid "Leds off"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:32
+msgid "Feed with"
 msgstr ""
 

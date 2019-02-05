@@ -1,10 +1,10 @@
 from flask import render_template, send_from_directory, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_babel import gettext
 import bcrypt
 
 import aquaurban
 from aquaurban import app, db, babel
+from aquaurban.quick_message import FLASH
 from aquaurban.code import UserPermissionCode
 from aquaurban.model import User, Community, System, Bioinfo
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
@@ -13,8 +13,7 @@ AVAILABLE_LOCALES = ['en', 'pt']
 
 @babel.localeselector
 def get_locale ():
-	#return request.accept_languages.best_match(AVAILABLE_LOCALES)
-	return 'pt'
+	return request.accept_languages.best_match(AVAILABLE_LOCALES)
 
 @app.route('/')
 def index ():
@@ -27,7 +26,7 @@ def about ():
 @app.route('/register', methods=['GET', 'POST'])
 def register ():
 	if current_user.is_authenticated and request.method == 'GET':
-		flash('You\'re already logged in. To register, first logout.', 'danger')
+		flash(FLASH.REGISTER_ERROR_LOGGED_IN, FLASH.REGISTER_ERROR_LOGGED_IN_CATEGORY)
 		return redirect(url_for('index'))
 	form = RegistrationForm()
 	if form.validate_on_submit():
@@ -35,14 +34,14 @@ def register ():
 		db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash, 
 			permission=UserPermissionCode.COMMON.value if not form.as_dummy.data else UserPermissionCode.DUMMY.value))
 		db.session.commit()
-		flash(f'Account created for {form.username.data}!', 'success')
+		flash(FLASH.REGISTER_SUCCESS(form.username.data), FLASH.REGISTER_SUCCESS_CATEGORY)
 		return redirect(url_for('index'))
 	return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login ():
 	if current_user.is_authenticated:
-		flash('You\'re already logged in. To switch user, first logout.', 'danger')
+		flash(FLASH.LOGIN_ERROR_LOGGED_IN, FLASH.LOGIN_ERROR_LOGGED_IN_CATEGORY)
 		return redirect(url_for('index'))
 	form = LoginForm()
 	if form.validate_on_submit():
@@ -51,10 +50,10 @@ def login ():
 			if bcrypt.hashpw(form.password.data.encode(), user.password.encode()) == user.password.encode():
 				login_user(user, remember=form.remember.data)
 				next_url = request.args.get('next')
-				flash('Login successful!', 'success')
+				flash(FLASH.LOGIN_SUCCESS, FLASH.LOGIN_SUCCESS_CATEGORY)
 				return redirect(next_url) if next_url else redirect(url_for('index'))
-			else: flash('Wrong password. Try again.', 'danger')
-		else: flash('E-Mail not known. Try again.', 'danger')
+			else: flash(FLASH.LOGIN_ERROR_WRONG_PASSWORD, FLASH.LOGIN_ERROR_WRONG_PASSWORD_CATEGORY)
+		else: flash(FLASH.LOGIN_ERROR_WRONG_EMAIL, FLASH.LOGIN_ERROR_WRONG_EMAIL_CATEGORY)
 	return render_template('login.html', form=form)
 
 @app.route('/logout')
@@ -81,10 +80,10 @@ def register_system ():
 				db.session.add(system)
 				db.session.commit()
 				aquaurban.mqtt_hub.listen_system(system)
-				flash('System registered succesfully', 'success')
+				flash(FLASH.SYSREGISTER_SUCCESS, FLASH.SYSREGISTER_SUCCESS_CATEGORY)
 				return redirect(url_for('index'))
-			else: flash('You already used that name in other system. Use another.', 'danger')
-		else: flash('Wrong password. Try again.', 'danger')
+			else: flash(FLASH.SYSREGISTER_ERROR_USED_NAME, FLASH.SYSREGISTER_ERROR_USED_NAME_CATEGORY)
+		else: flash(FLASH.SYSREGISTER_ERROR_WRONG_PASSWORD, FLASH.SYSREGISTER_ERROR_WRONG_PASSWORD_CATEGORY)
 	return render_template('system/register.html', form=form)
 
 @app.route('/system/dashboard')

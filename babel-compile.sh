@@ -1,0 +1,1 @@
+pybabel compile -d aquaurban/translations #compile all translations into binary files
