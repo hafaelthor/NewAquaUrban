@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import SmallInteger, Integer, BigInteger, Float, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
@@ -92,7 +92,7 @@ class Bioinfo (Base):
 		}
 
 	def __repr__ (self):
-		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC {self.humidity}% pH({self.acidness}) at {self.timestamp}] system_id={self.system_id}>'
+		return f'<BIOINFO {self.id} | [{"above" if self.waterlevel else "below"} {self.brightness}lm {self.temperature}ºC {self.humidity}% pH({self.acidness}) at {datetime.fromtimestamp(self.timestamp)}] system_id={self.system_id}>'
 
 class Action (Base):
 	__tablename__ = 'action'
@@ -105,5 +105,5 @@ class Action (Base):
 	user_id 	= Column(Integer, ForeignKey('user.id'))
 
 	def __repr__ (self):
-		if self.user_id: return f'<ACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {self.timestamp}] system_id={self.system_id} user_id={self.user_id}>'
-		else: return f'<AUTOACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {self.timestamp}] system_id={self.system_id}>'
+		if self.user_id: return f'<ACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {datetime.fromtimestamp(self.timestamp)}] system_id={self.system_id} user_id={self.user_id}>'
+		else: return f'<AUTOACTION {self.id} | [{ActorCode(self.actor).name}({self.info}) at {datetime.fromtimestamp(self.timestamp)}] system_id={self.system_id}>'

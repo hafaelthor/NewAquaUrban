@@ -1,4 +1,4 @@
-from flask import render_template, send_from_directory, url_for, flash, redirect, request
+from flask import render_template, send_from_directory, url_for, flash, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 import bcrypt
 
@@ -14,6 +14,12 @@ AVAILABLE_LOCALES = ['en', 'pt']
 @babel.localeselector
 def get_locale ():
 	return request.accept_languages.best_match(AVAILABLE_LOCALES)
+
+'''*************
+
+TEMPLATE ROUTING
+
+*************'''
 
 @app.route('/')
 def index ():
@@ -90,3 +96,57 @@ def register_system ():
 @login_required
 def system_dashboard ():
 	return render_template('system/dashboard.html')
+
+'''*********
+
+JSON ROUTING
+
+*********'''
+
+from datetime import datetime
+
+@app.route('/system/hquery/<int:system_id>')
+def system_hquery (system_id):
+	system = db.session.query(System).get(system_id)
+	data = {
+		"timestamp": [],
+		"waterlevel": [],
+		"brightness": [],
+		"temperature": [],
+		"humidity": [],
+		"acidness": []
+	}
+	try:
+		ti = int(request.args.get('ti'))
+		tf = int(request.args.get('tf'))
+		for bio in db.session.query(Bioinfo).filter(
+			Bioinfo.system_id == system_id, Bioinfo.timestamp >= ti, Bioinfo.timestamp <= tf).all():
+			data["timestamp"].append(bio.timestamp)
+			data["waterlevel"].append(bio.waterlevel)
+			data["brightness"].append(bio.brightness)
+			data["temperature"].append(bio.temperature)
+			data["humidity"].append(bio.humidity)
+			data["acidness"].append(bio.acidness)
+	except Exception as err:
+		return jsonify({"error": "Error during query"})
+	return jsonify(data)
+
+@app.route('/system/hlast/<int:system_id>')
+def system_hlast (system_id):
+	system = db.session.query(System).get(system_id)
+	data = {
+		"timestamp": [],
+		"waterlevel": [],
+		"brightness": [],
+		"temperature": [],
+		"humidity": [],
+		"acidness": []
+	}
+	for bio in db.session.query(Bioinfo).filter(Bioinfo.system_id == system_id).all()[-5:]:
+		data["timestamp"].append(bio.timestamp)
+		data["waterlevel"].append(bio.waterlevel)
+		data["brightness"].append(bio.brightness)
+		data["temperature"].append(bio.temperature)
+		data["humidity"].append(bio.humidity)
+		data["acidness"].append(bio.acidness)
+	return jsonify(data)

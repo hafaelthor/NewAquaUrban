@@ -5,6 +5,9 @@
 		{% include "includes/head.html" %}
 		{% block head %}
 		{% endblock head %}
+		{% include "includes/main_scripts.html" %}
+		{% block script %}
+		{% endblock %}
 	</head>
 	<body>
 		{% include "includes/header.html" %}
@@ -25,6 +28,5 @@
 				</div>
 			</div>
 		</main>
-		{% include "includes/main_scripts.html" %}
 	</body>
 </html>

@@ -32,5 +32,6 @@ def handle_action (data):
 	aquaurban.mqtt_hub.send_action(system, ActorCode(actor), info)
 
 def send_bioinfo (bioinfo):
+	print(bioinfo)
 	for safe_id in bioinfo.system.safe_ids_for('bio') & sids.keys():
 		socketio.emit('bio', bioinfo.to_dict(), room=sids[safe_id], namespace='/system')

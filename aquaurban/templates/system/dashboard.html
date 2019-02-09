@@ -3,53 +3,60 @@
 {% block title %} {{_("Systems Dashboard")}} - {{super()}} {% endblock %}
 
 {% block content %}
-	{% include "system/includes/minipanel.html" %}
 	{% from "system/includes/minipanel.html" import create_minipanel %}
-
 	<div class="container-fluid">
-		<h1>{{_("Personal Systems")}}</h1>
-		{% with loop_ns = namespace(i=0) %}
-			{% for system in current_user.systems %}
-				{{create_minipanel("personal", loop.index, system)}}
-				{% set loop_ns.i = loop_ns.i + 1 %}
-			{% endfor %}
-			{% if loop_ns.i == 0 %}
-				<div class="content-frame">
-					<p class="text-muted">{{_("You currently don't have any systems registered")}}</p>
-				</div>
-			{% endif %}
-		{% endwith %}
-		{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
-			<h1>{{_("Communal Systems")}}</h1>
+		<div class="row">
+			<div class="content-frame col-md-12"><h1>{{_("Personal Systems")}}</h1></div>
 			{% with loop_ns = namespace(i=0) %}
-				{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
-					{% if system.user_id != current_user.id %}
-						{{create_minipanel("community", loop.index, system)}}
-						{% set loop_ns.i = loop_ns.i + 1 %}
-					{% endif %}
+				{% for system in current_user.systems %}
+					<div class="content-frame col-md-12">{{create_minipanel("personal", loop.index, system)}}</div>
+					{% set loop_ns.i = loop_ns.i + 1 %}
 				{% endfor %}
 				{% if loop_ns.i == 0 %}
-					<div class="content-frame">
+					<div class="content-frame col-md-12">
 						<p class="text-muted">{{_("You currently don't have any systems registered")}}</p>
 					</div>
 				{% endif %}
 			{% endwith %}
-		{% endif %}
+		</div>
+		<div class="row"> 
+			{% if current_user.permission >= aquaurban.code.UserPermissionCode.SUPERVISOR.value and current_user.community_id %}
+				<div class="content-frame col-md-12"><h1>{{_("Communal Systems")}}</h1></div>
+				{% with loop_ns = namespace(i=0) %}
+					{% for system in aquaurban.db.session.query(aquaurban.model.Community).get(current_user.community_id).systems %}
+						{% if system.user_id != current_user.id %}
+							<div class="content-frame col-md-12">{{create_minipanel("community", loop.index, system)}}</div>
+							{% set loop_ns.i = loop_ns.i + 1 %}
+						{% endif %}
+					{% endfor %}
+					{% if loop_ns.i == 0 %}
+						<div class="content-frame col-md-12">
+							<p class="text-muted">{{_("You currently don't have any systems registered")}}</p>
+						</div>
+					{% endif %}
+				{% endwith %}
+			{% endif %}
+		</div>
 	</div>
-
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="{{url_for('static', filename='js/ws_route.js')}}"></script>
-	<script type="text/javascript">
-		var systemMinipanels = {}
-
-		$(() => {
-			$('.system-minipanel').each(function () {
-				systemMinipanels[$(this).data('system-id')] = new SystemMinipanel($(this).data('id'))
-			});
-		});
-	</script>
-	<script type="text/javascript">
-		
-	</script>
 {% endblock content %}
+{% block script %}
+	<script type="text/javascript">
+		/************
+		TRANSLATIONS
+		*************/
+		const ABOVE_TEXT = '{{_("above")}}';
+		const BELOW_TEXT = '{{_("below")}}';
+		const WATERLEVEL_TEXT = "{{_('Water Level')}}";
+		const BRIGHTNESS_TEXT = '{{_("LDR Resistance")}}';
+		const TEMPERATURE_TEXT = '{{_("Temperature")}}';
+		const HUMIDITY_TEXT = '{{_("Humidity")}}';
+		const ACIDNESS_TEXT = '{{_("Acidness")}}';
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/modules/Chart.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/system/SystemWebsocket.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/system/SystemMinichart.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/system/SystemMinipanel.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/system/dashboard_main.js')}}"></script>
+{% endblock script %}

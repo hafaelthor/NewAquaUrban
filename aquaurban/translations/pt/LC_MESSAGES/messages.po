@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-05 16:19-0300\n"
+"POT-Creation-Date: 2019-02-06 08:09-0300\n"
 "PO-Revision-Date: 2019-02-04 22:36-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt\n"
@@ -273,6 +273,16 @@ msgstr "Atualmente, você não tem nenhum sistema registrado"
 msgid "Communal Systems"
 msgstr "Sistema Comunal"
 
+#: aquaurban/templates/system/dashboard.html:44
+#: aquaurban/templates/system/includes/minipanel.html:12
+msgid "above"
+msgstr "acima"
+
+#: aquaurban/templates/system/dashboard.html:45
+#: aquaurban/templates/system/includes/minipanel.html:12
+msgid "below"
+msgstr "abaixo"
+
 #: aquaurban/templates/system/register.html:3
 msgid "System Registration"
 msgstr "Registro de Sistema"
@@ -280,16 +290,6 @@ msgstr "Registro de Sistema"
 #: aquaurban/templates/system/includes/minipanel.html:11
 msgid "Water Level"
 msgstr "Nível d'Água"
-
-#: aquaurban/templates/system/includes/minipanel.html:12
-#: aquaurban/templates/system/includes/minipanel.html:65
-msgid "above"
-msgstr "acima"
-
-#: aquaurban/templates/system/includes/minipanel.html:12
-#: aquaurban/templates/system/includes/minipanel.html:65
-msgid "below"
-msgstr "abaixo"
 
 #: aquaurban/templates/system/includes/minipanel.html:15
 msgid "LDR Resistance"
@@ -301,7 +301,7 @@ msgstr "Temperatura"
 
 #: aquaurban/templates/system/includes/minipanel.html:23
 msgid "Humidity"
-msgstr "Humidade"
+msgstr "Umidade"
 
 #: aquaurban/templates/system/includes/minipanel.html:27
 msgid "Acidness"
@@ -318,3 +318,4 @@ msgstr "Desligar Led"
 #: aquaurban/templates/system/includes/minipanel.html:32
 msgid "Feed with"
 msgstr "Alimentar com"
+
