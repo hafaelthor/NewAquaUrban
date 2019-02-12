@@ -1,4 +1,4 @@
-from flask import render_template, send_from_directory, url_for, flash, redirect, request, jsonify
+from flask import render_template, send_from_directory, url_for, flash, redirect, g, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 import bcrypt
 
@@ -9,7 +9,7 @@ from aquaurban.code import UserPermissionCode
 from aquaurban.model import User, Community, System, Bioinfo
 from aquaurban.form import RegistrationForm, LoginForm, CreateSystemForm
 
-AVAILABLE_LOCALES = ['en', 'pt']
+AVAILABLE_LOCALES = ['pt']
 
 @babel.localeselector
 def get_locale ():
@@ -23,7 +23,10 @@ TEMPLATE ROUTING
 
 @app.route('/')
 def index ():
-	return render_template('index.html')
+	if current_user.is_authenticated:
+		return redirect(url_for('system_dashboard'))
+	else:
+		return redirect(url_for('about'))
 
 @app.route('/about')
 def about ():

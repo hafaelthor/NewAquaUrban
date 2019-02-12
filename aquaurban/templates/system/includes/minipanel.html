@@ -4,42 +4,72 @@
 	<div class="container-fluid">	
 		<div class="system-minipanel" data-id="{{name}}-{{id}}" data-system-id="{{system.id}}">
 			<div class="row">
-				<h3>{{system.name}}</h3>
+				<legend class="border-bottom mb-4"><h2>{{system.name}}</h2></legend>
 			</div>
 			<div class="row">
-				<div class="col-md-6 col-sm-12">
+				<div class="col-md-12">
 					{% with bioinfo = system.bioinfos[-1] if system.bioinfos else aquaurban.model.Bioinfo() %}
-						<ul>
-							<li>
-								{{_("Water Level")}}: 
-								<span class="system-minipanel-bioinfo" data-bioinfo="waterlevel">{{(_("above") if bioinfo.waterlevel else _("below")) if bioinfo.waterlevel is not none else "??"}}</span>
-							</li>
-							<li>
-								{{_("LDR Resistance")}}:
-								<span class="system-minipanel-bioinfo" data-bioinfo="brightness">{{bioinfo.brightness if bioinfo.brightness is not none else "??"}}</span> <span>&#8486;</span>
-							</li>
-							<li>
-								{{_("Temperature")}}: 
-								<span class="system-minipanel-bioinfo" data-bioinfo="temperature">{{bioinfo.temperature if bioinfo.temperature is not none else "??"}}</span> Cº
-							</li>
-							<li class="system-minipanel-bioinfo" data-bioinfo="humidity">
-								{{_("Humidity")}}:
-								<span class="system-minipanel-bioinfo" data-bioinfo="humidity">{{bioinfo.humidity if bioinfo.humidity is not none else "??"}}</span> %
-							</li>
-							<li>
-								{{_("Acidness")}}:
-								<span class="system-minipanel-bioinfo" data-bioinfo="acidness">{{bioinfo.acidness if bioinfo.acidness is not none else "??"}}</span> pH
-							</li>
-						</ul>
+						<div class="container-fluid">
+							<div class="row system-minipanel-frame">
+								<legend class="border-bottom mb-4">{{_("Brightness")}} (<span>&#8486;</span>)</legend>
+								<div class="col-md-4">
+									<input disabled class="system-minipanel-bioinfo form-control form-control-lg bg-white" data-bioinfo="brightness" value="{{bioinfo.brightness if bioinfo.brightness is not none else '??'}}">
+								</div>
+								<div class="col-md-4">
+									<button class="btn btn-outline-success system-minipanel-action form-control form-control-lg" data-action="1" data-actor="0" data-info="1">{{_("Lights on")}}</button>
+								</div>
+								<div class="col-md-4">
+									<button class="btn btn-outline-danger system-minipanel-action form-control form-control-lg" data-action="2" data-actor="0" data-info="0">{{_("Lights off")}}</button>
+								</div>
+							</div>
+							<div class="row system-minipanel-frame">
+								<legend class="border-bottom mb-4">{{_("Feeding")}}</legend>
+								<div class="col-md-6">
+									<button class="btn btn-outline-info system-minipanel-action form-control form-control-lg" data-action="3" data-actor="1" data-info="100">{{_("Feed")}}</button>
+								</div>
+								<div class="col-md-6">
+									<input type="number" class="system-minipanel-action-info form-control form-control-lg" data-to-action="3" placeholder="[{{_('in grams')}}]" min="1"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="container-fluid">
+										<div class="row system-minipanel-frame">
+											<legend class="border-bottom mb-4">{{_("Water Level")}}</legend>
+											<div class="col-md-12">
+												<input disabled class="system-minipanel-bioinfo form-control form-control-lg bg-white" data-bioinfo="waterlevel" value="{{(_('above') if bioinfo.waterlevel else _('below')) if bioinfo.waterlevel is not none else '??'}}">
+											</div>
+										</div>
+										<div class="row system-minipanel-frame">
+											<legend class="border-bottom mb-4">{{_("Temperature")}} (Cº)</legend>
+											<div class="col-md-12">
+												<input disabled class="system-minipanel-bioinfo form-control form-control-lg bg-white" data-bioinfo="temperature" value="{{bioinfo.temperature if bioinfo.temperature is not none else '??'}}">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="container-fluid">
+										<div class="row system-minipanel-frame">
+											<legend class="border-bottom mb-4">{{_("Humidity")}} (%)</legend>
+											<div class="col-md-12">
+												<input disabled class="system-minipanel-bioinfo form-control form-control-lg bg-white" data-bioinfo="humidity" value="{{bioinfo.humidity if bioinfo.humidity is not none else '??'}}">
+											</div>
+										</div>
+										<div class="row system-minipanel-frame">
+											<legend class="border-bottom mb-4">{{_("Acidness")}} (pH)</legend>
+											<div class="col-md-12">
+												<input disabled class="system-minipanel-bioinfo form-control form-control-lg bg-white" data-bioinfo="acidness" value="{{bioinfo.acidness if bioinfo.acidness is not none else '??'}}">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					{% endwith %}
 				</div>
-				<div class="col-md-6 col-sm-12">
-					<button class="btn btn-outline-info system-minipanel-action" data-action="1" data-actor="0" data-info="1">{{_("Led on")}}</button>
-					<button class="btn btn-outline-info system-minipanel-action" data-action="2" data-actor="0" data-info="0">{{_("Leds off")}}</button>
-					<button class="btn btn-outline-info system-minipanel-action" data-action="3" data-actor="1" data-info="100">{{_("Feed with")}}</button>
-					<input type="number" class="system-minipanel-action-info" data-to-action="3" value="100"/>
-				</div>
 				<div class="col-md-12">
+					<legend class="border-bottom mb-4"><h3>{{_("Biological Information Chart")}}</h3></legend>
 					{{create_minichart(name, id, system)}}
 				</div>
 			</div>

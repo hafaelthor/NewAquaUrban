@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-06 08:09-0300\n"
+"POT-Creation-Date: 2019-02-12 10:26-0300\n"
 "PO-Revision-Date: 2019-02-04 22:36-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt\n"
@@ -260,62 +260,99 @@ msgstr "Sair"
 msgid "Systems Dashboard"
 msgstr "Painel de Sistemas"
 
-#: aquaurban/templates/system/dashboard.html:10
+#: aquaurban/templates/system/dashboard.html:15
 msgid "Personal Systems"
 msgstr "Sistemas Pessoais"
 
-#: aquaurban/templates/system/dashboard.html:18
-#: aquaurban/templates/system/dashboard.html:33
+#: aquaurban/templates/system/dashboard.html:23
+#: aquaurban/templates/system/dashboard.html:40
 msgid "You currently don't have any systems registered"
 msgstr "Atualmente, você não tem nenhum sistema registrado"
 
-#: aquaurban/templates/system/dashboard.html:23
+#: aquaurban/templates/system/dashboard.html:30
 msgid "Communal Systems"
 msgstr "Sistema Comunal"
 
-#: aquaurban/templates/system/dashboard.html:44
-#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/dashboard.html:53
+#: aquaurban/templates/system/includes/minipanel.html:40
 msgid "above"
 msgstr "acima"
 
-#: aquaurban/templates/system/dashboard.html:45
-#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/dashboard.html:54
+#: aquaurban/templates/system/includes/minipanel.html:40
 msgid "below"
 msgstr "abaixo"
+
+#: aquaurban/templates/system/dashboard.html:55
+#: aquaurban/templates/system/includes/minipanel.html:38
+msgid "Water Level"
+msgstr "Nível d'Água"
+
+#: aquaurban/templates/system/dashboard.html:56
+msgid "LDR Resistance"
+msgstr "Resistência do LDR"
+
+#: aquaurban/templates/system/dashboard.html:57
+#: aquaurban/templates/system/includes/minipanel.html:44
+msgid "Temperature"
+msgstr "Temperatura"
+
+#: aquaurban/templates/system/dashboard.html:58
+#: aquaurban/templates/system/includes/minipanel.html:54
+msgid "Humidity"
+msgstr "Umidade"
+
+#: aquaurban/templates/system/dashboard.html:59
+#: aquaurban/templates/system/includes/minipanel.html:60
+msgid "Acidness"
+msgstr "Acidez"
 
 #: aquaurban/templates/system/register.html:3
 msgid "System Registration"
 msgstr "Registro de Sistema"
 
-#: aquaurban/templates/system/includes/minipanel.html:11
-msgid "Water Level"
-msgstr "Nível d'Água"
+#: aquaurban/templates/system/includes/minichart.html:11
+#: aquaurban/templates/system/includes/minichart.html:32
+msgid "Query"
+msgstr "Pesquisa"
 
-#: aquaurban/templates/system/includes/minipanel.html:15
-msgid "LDR Resistance"
-msgstr "Resistência do LDR"
+#: aquaurban/templates/system/includes/minichart.html:15
+msgid "Start"
+msgstr "Início"
+
+#: aquaurban/templates/system/includes/minichart.html:22
+msgid "End"
+msgstr "Fim"
+
+#: aquaurban/templates/system/includes/minichart.html:35
+msgid "See Recent"
+msgstr "Ver Recente"
+
+#: aquaurban/templates/system/includes/minipanel.html:14
+msgid "Brightness"
+msgstr "Luminosidade"
 
 #: aquaurban/templates/system/includes/minipanel.html:19
-msgid "Temperature"
-msgstr "Temperatura"
+msgid "Lights on"
+msgstr "Ligar luzes"
 
-#: aquaurban/templates/system/includes/minipanel.html:23
-msgid "Humidity"
-msgstr "Umidade"
+#: aquaurban/templates/system/includes/minipanel.html:22
+msgid "Lights off"
+msgstr "Desligar luzes"
 
-#: aquaurban/templates/system/includes/minipanel.html:27
-msgid "Acidness"
-msgstr "Acidez"
+#: aquaurban/templates/system/includes/minipanel.html:26
+msgid "Feeding"
+msgstr "Alimentação"
 
-#: aquaurban/templates/system/includes/minipanel.html:30
-msgid "Led on"
-msgstr "Ligar Led"
+#: aquaurban/templates/system/includes/minipanel.html:28
+msgid "Feed"
+msgstr "Alimentar"
 
 #: aquaurban/templates/system/includes/minipanel.html:31
-msgid "Leds off"
-msgstr "Desligar Led"
+msgid "in grams"
+msgstr "em gramas"
 
-#: aquaurban/templates/system/includes/minipanel.html:32
-msgid "Feed with"
-msgstr "Alimentar com"
+#: aquaurban/templates/system/includes/minipanel.html:72
+msgid "Biological Information Chart"
+msgstr "Gráfico de Informações Biológicas"
 

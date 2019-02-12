@@ -25,16 +25,16 @@ class SystemMinipanel {
 	}
 
 	updateBioinfo (bio) {
-		if (bio.waterlevel != null) this.$bioinfo.waterlevel.html(bio.waterlevel?ABOVE_TEXT:BELOW_TEXT);
-		else this.$bioinfo.waterlevel.html('??');
-		if (bio.brightness != null) this.$bioinfo.brightness.html(bio.brightness);
-		else this.$bioinfo.brightness.html('??');
-		if (bio.temperature != null) this.$bioinfo.temperature.html(bio.temperature);
-		else this.$bioinfo.temperature.html('??');
-		if (bio.humidity != null) this.$bioinfo.humidity.html(bio.humidity);
-		else this.$bioinfo.humidity.html('??');
+		if (bio.waterlevel != null) this.$bioinfo.waterlevel.val(bio.waterlevel?ABOVE_TEXT:BELOW_TEXT);
+		else this.$bioinfo.waterlevel.val('??');
+		if (bio.brightness != null) this.$bioinfo.brightness.val(bio.brightness);
+		else this.$bioinfo.brightness.val('??');
+		if (bio.temperature != null) this.$bioinfo.temperature.val(bio.temperature);
+		else this.$bioinfo.temperature.val('??');
+		if (bio.humidity != null) this.$bioinfo.humidity.val(bio.humidity);
+		else this.$bioinfo.humidity.val('??');
 		if (bio.acidness != null) this.$bioinfo.acidness.html(bio.acidness);
-		else this.$bioinfo.acidness.html('??');
+		else this.$bioinfo.acidness.val('??');
 
 		this.minichart.updateBioinfo(bio);
 	}

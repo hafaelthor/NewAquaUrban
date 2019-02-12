@@ -5,23 +5,39 @@
 				<canvas class="system-minichart" data-id="{{name}}-{{id}}" data-system-id={{system.id}}></canvas>
 			</div>
 			<div class="col-md-12">
-				<form class="system-minichart-query" data-id="{{name}}-{{id}}">
-					<fieldset class="form-group">
-						<legend class="border-bottom mb-4">{{_("Query")}}</legend>
-		                <div class="form-group">
-		                	<label class="form-control-label">{{_("Start")}}</label>
-		                    <input type="datetime-local" class="form-control form-control-lg" name="start" value="2019-02-08T08:00" />
-		                </div>
-		                <div class="form-group">
-		                	<label class="form-control-label">{{_("End")}}</label>
-		                    <input type="datetime-local" class="form-control form-control-lg" name="end" value="2019-02-08T10:00" />
-		                </div>
-		            </fieldset>
-		            <div class="form-group">
-		            		<input type="submit" class="btn btn-outline-info" name="query" value="{{_('Query')}}"/>
-		            		<input type="submit" class="btn btn-outline-info" name="recent" value="{{_('See Recent')}}">
-		            </div>
-		        </form>
+				<div class="container-fluid">
+					<form class="system-minichart-query" data-id="{{name}}-{{id}}">
+						<fieldset class="form-group">
+							<legend class="border-bottom mb-4">{{_("Query")}}</legend>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="form-control-label">{{_("Start")}}</label>
+										<input class="form-control form-control-lg" name="start-date">
+										<input class="form-control form-control-lg" name="start-time">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="form-control-label">{{_("End")}}</label>
+										<input class="form-control form-control-lg" name="end-date">
+										<input class="form-control form-control-lg" name="end-time">
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-6">
+										<input type="submit" class="btn btn-outline-info form-control form-control-lg" name="query" value="{{_('Query')}}"/>
+								</div>
+								<div class="col-md-6">
+										<input type="submit" class="btn btn-outline-primary form-control form-control-lg" name="recent" value="{{_('See Recent')}}">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>

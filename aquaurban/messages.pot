@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-06 08:09-0300\n"
+"POT-Creation-Date: 2019-02-12 10:26-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -246,62 +246,99 @@ msgstr ""
 msgid "Systems Dashboard"
 msgstr ""
 
-#: aquaurban/templates/system/dashboard.html:10
+#: aquaurban/templates/system/dashboard.html:15
 msgid "Personal Systems"
 msgstr ""
 
-#: aquaurban/templates/system/dashboard.html:18
-#: aquaurban/templates/system/dashboard.html:33
+#: aquaurban/templates/system/dashboard.html:23
+#: aquaurban/templates/system/dashboard.html:40
 msgid "You currently don't have any systems registered"
 msgstr ""
 
-#: aquaurban/templates/system/dashboard.html:23
+#: aquaurban/templates/system/dashboard.html:30
 msgid "Communal Systems"
 msgstr ""
 
-#: aquaurban/templates/system/dashboard.html:44
-#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/dashboard.html:53
+#: aquaurban/templates/system/includes/minipanel.html:40
 msgid "above"
 msgstr ""
 
-#: aquaurban/templates/system/dashboard.html:45
-#: aquaurban/templates/system/includes/minipanel.html:12
+#: aquaurban/templates/system/dashboard.html:54
+#: aquaurban/templates/system/includes/minipanel.html:40
 msgid "below"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:55
+#: aquaurban/templates/system/includes/minipanel.html:38
+msgid "Water Level"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:56
+msgid "LDR Resistance"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:57
+#: aquaurban/templates/system/includes/minipanel.html:44
+msgid "Temperature"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:58
+#: aquaurban/templates/system/includes/minipanel.html:54
+msgid "Humidity"
+msgstr ""
+
+#: aquaurban/templates/system/dashboard.html:59
+#: aquaurban/templates/system/includes/minipanel.html:60
+msgid "Acidness"
 msgstr ""
 
 #: aquaurban/templates/system/register.html:3
 msgid "System Registration"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:11
-msgid "Water Level"
+#: aquaurban/templates/system/includes/minichart.html:11
+#: aquaurban/templates/system/includes/minichart.html:32
+msgid "Query"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:15
-msgid "LDR Resistance"
+#: aquaurban/templates/system/includes/minichart.html:15
+msgid "Start"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minichart.html:22
+msgid "End"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minichart.html:35
+msgid "See Recent"
+msgstr ""
+
+#: aquaurban/templates/system/includes/minipanel.html:14
+msgid "Brightness"
 msgstr ""
 
 #: aquaurban/templates/system/includes/minipanel.html:19
-msgid "Temperature"
+msgid "Lights on"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:23
-msgid "Humidity"
+#: aquaurban/templates/system/includes/minipanel.html:22
+msgid "Lights off"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:27
-msgid "Acidness"
+#: aquaurban/templates/system/includes/minipanel.html:26
+msgid "Feeding"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:30
-msgid "Led on"
+#: aquaurban/templates/system/includes/minipanel.html:28
+msgid "Feed"
 msgstr ""
 
 #: aquaurban/templates/system/includes/minipanel.html:31
-msgid "Leds off"
+msgid "in grams"
 msgstr ""
 
-#: aquaurban/templates/system/includes/minipanel.html:32
-msgid "Feed with"
+#: aquaurban/templates/system/includes/minipanel.html:72
+msgid "Biological Information Chart"
 msgstr ""
 

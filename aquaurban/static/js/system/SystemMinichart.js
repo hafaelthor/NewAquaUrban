@@ -13,14 +13,17 @@ CHART_TEMPERATURE_INDEX = 2;
 CHART_HUMIDITY_INDEX = 3;
 CHART_ACIDNESS_INDEX = 4;
 
-DATETIME_REGEX = /(?<month>\d+)-(?<day>\d{2})-(?<year>\d{2})T(?<hour>\d{2}):(?<minute>\d{2})/
-
 class SystemMinichart {
 	constructor (id) {
 		this.keep_updating 	= true; 
 		this.$canvas 		= $('.system-minichart[data-id="' + id + '"]');
-		this.system_id 		= this.$canvas.data('system-id');
 		this.$form 			= $('.system-minichart-query[data-id="' + id + '"]');
+		this.$timeStart = this.$form.find('input[name="start-time"]');
+		this.$dateStart = this.$form.find('input[name="start-date"]');
+		this.$timeEnd = this.$form.find('input[name="end-time"]');
+		this.$dateEnd = this.$form.find('input[name="end-date"]');
+		this.system_id = this.$canvas.data('system-id');
+		var that = this;
 		this.chart = new Chart(this.$canvas, {
 			type: DEFAULT_CHART_TYPE,
 			data: {
@@ -60,7 +63,26 @@ class SystemMinichart {
 			options: DEFAULT_CHART_OPTIONS
 		});
 		this.updateAll(this.queryBioLast());
-		var that = this;
+		this.$dateStart.datepicker({
+			uiLibrary: 'bootstrap4'
+		});
+		this.$timeStart.timepicker({
+			uiLibrary: 'bootstrap4',
+			snapToStep: true,
+			showMeridian: false,
+    		showInputs: true
+		});
+
+		this.$dateEnd.datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+		this.$timeEnd.timepicker({
+			uiLibrary: 'bootstrap4',
+			snapToStep: true,
+			showMeridian: false,
+			showInputs: true
+		});
+
 		this.$form.submit(function (event) {
 			switch ($(this).find('input[type=submit]:focus').attr('name')) {
 				case 'recent':
@@ -68,8 +90,8 @@ class SystemMinichart {
 					that.keep_updating = true;
 					break;
 				case 'query':
-					let ti = new Date(event.target[1].value);
-					let tf = new Date(event.target[2].value);
+					let ti = new Date(`${that.$dateStart.val()}T${that.$timeStart.val()}`);
+					let tf = new Date(`${that.$dateEnd.val()}T${that.$timeEnd.val()}`);
 					that.updateAll(that.queryBioInterval(ti, tf));
 					that.keep_updating = false;
 			}
