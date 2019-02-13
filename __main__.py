@@ -1,4 +1,4 @@
 from aquaurban import app, socketio
 
 if __name__ == '__main__':
-	socketio.run(app, port=8080)
+	socketio.run(app, port=8181)

@@ -110,7 +110,6 @@ from datetime import datetime
 
 @app.route('/system/hquery/<int:system_id>')
 def system_hquery (system_id):
-	system = db.session.query(System).get(system_id)
 	data = {
 		"timestamp": [],
 		"waterlevel": [],
@@ -136,7 +135,6 @@ def system_hquery (system_id):
 
 @app.route('/system/hlast/<int:system_id>')
 def system_hlast (system_id):
-	system = db.session.query(System).get(system_id)
 	data = {
 		"timestamp": [],
 		"waterlevel": [],

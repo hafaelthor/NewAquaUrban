@@ -62,9 +62,12 @@ class SystemMinichart {
 			},
 			options: DEFAULT_CHART_OPTIONS
 		});
+		let dateFormat = moment.localeData().longDateFormat('L')
 		this.updateAll(this.queryBioLast());
 		this.$dateStart.datepicker({
-			uiLibrary: 'bootstrap4'
+			uiLibrary: 'bootstrap4',
+			format: dateFormat.toLowerCase(),
+			maxDate: new Date()
 		});
 		this.$timeStart.timepicker({
 			uiLibrary: 'bootstrap4',
@@ -74,7 +77,9 @@ class SystemMinichart {
 		});
 
 		this.$dateEnd.datepicker({
-            uiLibrary: 'bootstrap4'
+			uiLibrary: 'bootstrap4',
+			format: moment.localeData().longDateFormat('L').toLowerCase(),
+			maxDate: new Date()
         });
 		this.$timeEnd.timepicker({
 			uiLibrary: 'bootstrap4',
@@ -90,9 +95,12 @@ class SystemMinichart {
 					that.keep_updating = true;
 					break;
 				case 'query':
-					let ti = new Date(`${that.$dateStart.val()}T${that.$timeStart.val()}`);
-					let tf = new Date(`${that.$dateEnd.val()}T${that.$timeEnd.val()}`);
-					that.updateAll(that.queryBioInterval(ti, tf));
+					let isoTimeStart = `${moment(that.$dateStart.val(), dateFormat).format('YYYY-MM-DD')}T${that.$timeStart.val()}`,
+						isoTimeEnd = `${moment(that.$dateEnd.val(), dateFormat).format('YYYY-MM-DD')}T${that.$timeEnd.val()}`,
+						timeStart = new Date(isoTimeStart), timeEnd = new Date(isoTimeEnd);
+				
+					let data = that.queryBioInterval(dateToUnixSeconds(timeStart), dateToUnixSeconds(timeEnd));
+					if (!data.error) that.updateAll(data);
 					that.keep_updating = false;
 			}
 			event.preventDefault();
@@ -137,7 +145,7 @@ class SystemMinichart {
 
 	queryBioInterval (ti, tf) {
 		return $.ajax({
-			url: `hquery/${this.system_id}?${parseQueryString({ti: Math.round(ti.getTime() / 1e3), tf: Math.round(tf.getTime() / 1e3)})}`,
+			url: `hquery/${this.system_id}?${parseQueryString({ti: ti, tf: tf})}`,
 			async: false
 		}).responseJSON;
 	}
@@ -152,8 +160,8 @@ class SystemMinichart {
 
 function parseChartTimestamp (timestamp) {
 	if (timestamp == null) return null;
-	let date = new Date(timestamp * 1e3); 
-	return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+	let date = new Date(timestamp * 1e3);
+	return moment(new Date(timestamp * 1e3)).format(moment.localeData().longDateFormat('lll'));
 }
 
 function parseChartWaterlevel (waterlevel) {
